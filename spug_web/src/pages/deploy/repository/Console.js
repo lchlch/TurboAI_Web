@@ -1,8 +1,4 @@
-/**
- * Copyright (c) OpenSpug Organization. https://github.com/openspug/spug
- * Copyright (c) <spug.dev@gmail.com>
- * Released under the AGPL-3.0 License.
- */
+
 import React, { useState, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react';
 import { FullscreenOutlined, FullscreenExitOutlined, LoadingOutlined } from '@ant-design/icons';
@@ -40,7 +36,7 @@ export default observer(function Console() {
   }, [])
 
   function _makeSocket(index = 0) {
-    const token = store.record.spug_version;
+    const token = store.record.TurboAI_version;
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const socket = new WebSocket(`${protocol}//${window.location.host}/api/ws/build/${token}/?x-token=${X_TOKEN}`);
     socket.onopen = () => socket.send(String(index));

@@ -1,8 +1,4 @@
-/**
- * Copyright (c) OpenSpug Organization. https://github.com/openspug/spug
- * Copyright (c) <spug.dev@gmail.com>
- * Released under the AGPL-3.0 License.
- */
+
 import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
@@ -83,7 +79,7 @@ export default observer(function Ext2Setup1() {
       <Form.Item label="消息通知" extra={<span>
         应用审核及发布成功或失败结果通知，
         <a target="_blank" rel="noopener noreferrer"
-           href="https://spug.cc/docs/use-problem#use-dd">钉钉收不到通知？</a>
+           href="https://TurboAI.cc/docs/use-problem#use-dd">钉钉收不到通知？</a>
       </span>}>
         <Input
           addonBefore={(

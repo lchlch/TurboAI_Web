@@ -1,8 +1,4 @@
-/**
- * Copyright (c) OpenSpug Organization. https://github.com/openspug/spug
- * Copyright (c) <spug.dev@gmail.com>
- * Released under the AGPL-3.0 License.
- */
+
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import { Tabs, Tree, Input, Spin, Dropdown, Menu, Button, Drawer } from 'antd';
@@ -27,7 +23,7 @@ import Setting from './Setting';
 import { http, hasPermission, includes } from 'libs';
 import gStore from 'gStore';
 import styles from './index.module.less';
-import LogoSpugText from 'layout/logo-spug-white.png';
+import LogoTurboAIText from 'layout/logo-TurboAI-white.svg';
 import lds from 'lodash';
 
 let posX = 0
@@ -47,7 +43,7 @@ function WebSSH(props) {
   const [sshMode] = useState(hasPermission('host.console.view'))
 
   useEffect(() => {
-    window.document.title = 'Spug web terminal'
+    window.document.title = 'TurboAI web terminal'
     window.addEventListener('beforeunload', leaveTips)
     fetchNodes()
     gStore.fetchUserSettings()
@@ -210,7 +206,7 @@ function WebSSH(props) {
     )
   }
 
-  const spug_web_terminal =
+  const TurboAI_web_terminal =
     '                                                 __       __                          _                __\n' +
     '   _____ ____   __  __ ____ _   _      __ ___   / /_     / /_ ___   _____ ____ ___   (_)____   ____ _ / /\n' +
     '  / ___// __ \\ / / / // __ `/  | | /| / // _ \\ / __ \\   / __// _ \\ / ___// __ `__ \\ / // __ \\ / __ `// / \n' +
@@ -222,7 +218,7 @@ function WebSSH(props) {
     <div className={styles.container} onMouseUp={() => posX = 0} onMouseMove={handleMouseMove}>
       <div className={styles.sider} style={{width}}>
         <a className={styles.logo} href="/host" target="_blank">
-          <img src={LogoSpugText} alt="logo"/>
+          <img src={LogoTurboAIText} alt="logo"/>
         </a>
         <div className={styles.hosts}>
           <Spin spinning={fetching}>
@@ -275,7 +271,7 @@ function WebSSH(props) {
           ))}
         </Tabs>
         {hosts.length === 0 && (
-          <pre className={sshMode ? styles.fig : styles.fig2}>{spug_web_terminal}</pre>
+          <pre className={sshMode ? styles.fig : styles.fig2}>{TurboAI_web_terminal}</pre>
         )}
       </div>
       <Drawer

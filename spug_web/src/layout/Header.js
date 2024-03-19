@@ -1,8 +1,4 @@
-/**
- * Copyright (c) OpenSpug Organization. https://github.com/openspug/spug
- * Copyright (c) <spug.dev@gmail.com>
- * Released under the AGPL-3.0 License.
- */
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Layout, Dropdown, Menu, Avatar } from 'antd';
@@ -12,7 +8,7 @@ import Notification from './Notification';
 import styles from './layout.module.less';
 import http from '../libs/http';
 import history from '../libs/history';
-import avatar from './avatar.png';
+import avatar from './onlylogo.svg';
 
 export default function (props) {
 
@@ -27,12 +23,12 @@ export default function (props) {
 
   const UserMenu = (
     <Menu>
-      <Menu.Item>
+      {/* <Menu.Item>
         <Link to="/welcome/info">
           <UserOutlined style={{marginRight: 10}}/>个人中心
         </Link>
       </Menu.Item>
-      <Menu.Divider/>
+      <Menu.Divider/> */}
       <Menu.Item onClick={handleLogout}>
         <LogoutOutlined style={{marginRight: 10}}/>退出登录
       </Menu.Item>

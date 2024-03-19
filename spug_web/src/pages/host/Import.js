@@ -1,8 +1,4 @@
-/**
- * Copyright (c) OpenSpug Organization. https://github.com/openspug/spug
- * Copyright (c) <spug.dev@gmail.com>
- * Released under the AGPL-3.0 License.
- */
+
 import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import { Modal, Form, Upload, Button, Tooltip, Divider, Cascader, message } from 'antd';
@@ -67,7 +63,7 @@ export default observer(function () {
             fieldNames={{label: 'title'}}
             placeholder="请选择"/>
         </Form.Item>
-        <Form.Item required label="导入数据" extra="Spug使用密钥认证连接服务器，导入或输入的密码仅作首次验证使用，不会存储。">
+        <Form.Item required label="导入数据" extra="TurboAI使用密钥认证连接服务器，导入或输入的密码仅作首次验证使用，不会存储。">
           <Upload
             name="file"
             accept=".xls, .xlsx"

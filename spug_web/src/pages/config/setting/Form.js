@@ -1,8 +1,4 @@
-/**
- * Copyright (c) OpenSpug Organization. https://github.com/openspug/spug
- * Copyright (c) <spug.dev@gmail.com>
- * Released under the AGPL-3.0 License.
- */
+
 import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import { Modal, Form, Input, Checkbox, Switch, Row, Col, message } from 'antd';
@@ -78,7 +74,7 @@ export default observer(function () {
             valuePropName="checked"
             initialValue={store.record.is_public === undefined || store.record.is_public}
             tooltip={<a target="_blank" rel="noopener noreferrer"
-                        href="https://spug.cc/docs/conf-app">什么是公共/私有配置？</a>}>
+                        href="https://TurboAI.cc/docs/conf-app">什么是公共/私有配置？</a>}>
             <Switch checkedChildren="公共" unCheckedChildren="私有"/>
           </Form.Item>
         )}

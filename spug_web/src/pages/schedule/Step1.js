@@ -114,7 +114,7 @@ export default observer(function () {
         <span>
             任务执行失败告警通知，
             <a target="_blank" rel="noopener noreferrer"
-               href="https://spug.cc/docs/use-problem#use-dd">钉钉收不到通知？</a>
+               href="https://TurboAI.cc/docs/use-problem#use-dd">钉钉收不到通知？</a>
           </span>)}>
         <Input.Group compact>
           <Select style={{width: '25%'}} value={notifyMode}

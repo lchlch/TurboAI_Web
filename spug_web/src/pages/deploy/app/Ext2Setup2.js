@@ -1,8 +1,4 @@
-/**
- * Copyright (c) OpenSpug Organization. https://github.com/openspug/spug
- * Copyright (c) <spug.dev@gmail.com>
- * Released under the AGPL-3.0 License.
- */
+
 import React from 'react';
 import { observer } from 'mobx-react';
 import { MinusCircleOutlined, PlusOutlined, UpOutlined, DownOutlined } from '@ant-design/icons';
@@ -78,8 +74,8 @@ class Ext2Setup2 extends React.Component {
             message="小提示"
             style={{margin: '0 80px 20px'}}
             description={[
-              <p key={1}>Spug 将遵循先本地后目标主机的原则，按照顺序依次执行添加的动作，例如：本地动作1 -> 本地动作2 -> 目标主机动作1 -> 目标主机动作2 ...</p>,
-              <p key={2}>执行的命令内可以使用发布申请中设置的环境变量 SPUG_RELEASE，一般可用于标记一次发布的版本号或提交ID等，在执行的脚本内通过使用 $SPUG_RELEASE
+              <p key={1}>TurboAI 将遵循先本地后目标主机的原则，按照顺序依次执行添加的动作，例如：本地动作1 -> 本地动作2 -> 目标主机动作1 -> 目标主机动作2 ...</p>,
+              <p key={2}>执行的命令内可以使用发布申请中设置的环境变量 TurboAI_RELEASE，一般可用于标记一次发布的版本号或提交ID等，在执行的脚本内通过使用 $TurboAI_RELEASE
                 获取其值来执行相应操作。</p>,
               <p key={3}>{Tips}。</p>
             ]}/>
@@ -134,7 +130,7 @@ class Ext2Setup2 extends React.Component {
                 <Input
                   spellCheck={false}
                   disabled={store.isReadOnly || item['src_mode'] === '1'}
-                  placeholder="请输入本地（部署spug的容器或主机）路径"
+                  placeholder="请输入本地（部署TurboAI的容器或主机）路径"
                   value={item['src_mode'] === '1' ? 'N/A' : item['src']}
                   onChange={e => item['src'] = e.target.value}
                   addonBefore={(
@@ -165,7 +161,7 @@ class Ext2Setup2 extends React.Component {
               ) : null,
               <Form.Item key={2} required label="目标路径" extra={<a
                 target="_blank" rel="noopener noreferrer"
-                href="https://spug.cc/docs/deploy-config#transfer">使用前请务必阅读官方文档。</a>}>
+                href="https://TurboAI.cc/docs/deploy-config#transfer">使用前请务必阅读官方文档。</a>}>
                 <Input
                   disabled={store.isReadOnly}
                   spellCheck={false}

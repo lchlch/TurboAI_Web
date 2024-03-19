@@ -1,0 +1,12 @@
+{
+  "login": "登陆",
+  "userPlaceholder": "请输入用户名",
+  "pwdPlaceholder": "请输入密码",
+  "dashboard": "dashboard",
+  "serverManagement": "服务器管理",
+  "batchExecution": "批量执行",
+  "monitoringCenter": "监控中心",
+  "officialWebsite": "官网",
+  "executeTasks": "执行任务",
+  "fileDistribution": "文件分发"
+}

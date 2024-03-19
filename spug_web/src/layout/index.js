@@ -1,8 +1,4 @@
-/**
- * Copyright (c) OpenSpug Organization. https://github.com/openspug/spug
- * Copyright (c) <spug.dev@gmail.com>
- * Released under the AGPL-3.0 License.
- */
+
 import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { Layout, message } from 'antd';
@@ -45,7 +41,7 @@ export default function () {
       <Sider collapsed={collapsed}/>
       <Layout style={{height: '100vh'}}>
         <Header collapsed={collapsed} toggle={() => setCollapsed(!collapsed)}/>
-        <Layout.Content className={styles.content} id="spug-container">
+        <Layout.Content className={styles.content} id="TurboAI-container">
           <Switch>
             {Routes}
             <Route component={NotFound}/>

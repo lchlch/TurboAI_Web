@@ -1,8 +1,4 @@
-/**
- * Copyright (c) OpenSpug Organization. https://github.com/openspug/spug
- * Copyright (c) <spug.dev@gmail.com>
- * Released under the AGPL-3.0 License.
- */
+
 import React from 'react';
 import styles from './index.module.css';
 import { SmileTwoTone } from '@ant-design/icons';
@@ -25,7 +21,7 @@ class About extends React.Component {
     http.get('/api/setting/about/')
       .then(res => this.setState({info: res}))
       .finally(() => this.setState({fetching: false}))
-    http.get(`https://api.spug.cc/apis/release/latest/?version=${VERSION}`)
+    http.get(`https://api.TurboAI.cc/apis/release/latest/?version=${VERSION}`)
       .then(res => {
         if (res.has_new) {
           notification.open({
@@ -34,7 +30,7 @@ class About extends React.Component {
             top: 88,
             message: `发现新版本 ${res.version}`,
             icon: <SmileTwoTone/>,
-            btn: <a target="_blank" rel="noopener noreferrer" href="https://spug.cc/docs/update-version/">如何升级？</a>,
+            btn: <a target="_blank" rel="noopener noreferrer" href="https://TurboAI.cc/docs/update-version/">如何升级？</a>,
             description: <pre style={{lineHeight: '30px'}}>{res.content}<br/>{res.extra}</pre>
           })
         } else if (res.extra) {
@@ -61,18 +57,18 @@ class About extends React.Component {
           <Descriptions.Item label="操作系统">{info['system_version']}</Descriptions.Item>
           <Descriptions.Item label="Python版本">{info['python_version']}</Descriptions.Item>
           <Descriptions.Item label="Django版本">{info['django_version']}</Descriptions.Item>
-          <Descriptions.Item label="Spug API版本">{info['spug_version']}</Descriptions.Item>
-          <Descriptions.Item label="Spug Web版本">{VERSION}</Descriptions.Item>
+          <Descriptions.Item label="TurboAI API版本">{info['TurboAI_version']}</Descriptions.Item>
+          <Descriptions.Item label="TurboAI Web版本">{VERSION}</Descriptions.Item>
           <Descriptions.Item label="官网文档">
-            <a href="https://spug.cc" target="_blank" rel="noopener noreferrer">https://spug.cc</a>
+            <a href="https://TurboAI.cc" target="_blank" rel="noopener noreferrer">https://TurboAI.cc</a>
           </Descriptions.Item>
           <Descriptions.Item label="更新日志">
-            <a href="https://spug.cc/docs/change-log/" target="_blank"
-               rel="noopener noreferrer">https://spug.cc/docs/change-log/</a>
+            <a href="https://TurboAI.cc/docs/change-log/" target="_blank"
+               rel="noopener noreferrer">https://TurboAI.cc/docs/change-log/</a>
           </Descriptions.Item>
         </Descriptions>
-        {info['spug_version'] !== VERSION && (
-          <Alert showIcon style={{width: 500}} type="warning" message="Spug API版本与Web版本不匹配，请尝试刷新浏览器后再次查看。"/>
+        {info['TurboAI_version'] !== VERSION && (
+          <Alert showIcon style={{width: 500}} type="warning" message="TurboAI API版本与Web版本不匹配，请尝试刷新浏览器后再次查看。"/>
         )}
       </Spin>
     )

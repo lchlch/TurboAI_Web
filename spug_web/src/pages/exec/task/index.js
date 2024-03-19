@@ -1,8 +1,4 @@
-/**
- * Copyright (c) OpenSpug Organization. https://github.com/openspug/spug
- * Copyright (c) <spug.dev@gmail.com>
- * Released under the AGPL-3.0 License.
- */
+
 import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { PlusOutlined, ThunderboltOutlined, BulbOutlined, QuestionCircleOutlined } from '@ant-design/icons';
@@ -99,7 +95,7 @@ function TaskIndex() {
               <Radio.Button value="sh" style={{width: 80, textAlign: 'center'}}>Shell</Radio.Button>
               <Radio.Button value="python" style={{width: 80, textAlign: 'center'}}>Python</Radio.Button>
             </Radio.Group>
-            <a href="https://spug.cc/docs/batch-exec" target="_blank" rel="noopener noreferrer"
+            <a href="https://TurboAI.cc/docs/batch-exec" target="_blank" rel="noopener noreferrer"
                className={style.tips}><BulbOutlined/> 使用全局变量？</a>
             <Button style={{float: 'right'}} icon={<PlusOutlined/>} onClick={store.switchTemplate}>从执行模版中选择</Button>
             <ACEditor className={style.editor} mode={interpreter} value={command} width="100%" onChange={setCommand}/>

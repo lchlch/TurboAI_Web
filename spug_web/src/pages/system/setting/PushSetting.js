@@ -1,8 +1,4 @@
-/**
- * Copyright (c) OpenSpug Organization. https://github.com/openspug/spug
- * Copyright (c) <spug.dev@gmail.com>
- * Released under the AGPL-3.0 License.
- */
+
 import React, {useEffect, useState} from 'react';
 import {observer} from 'mobx-react';
 import {Form, Input, Button, Spin, Popconfirm, message} from 'antd';
@@ -15,7 +11,7 @@ export default observer(function () {
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(false);
   const [balance, setBalance] = useState({});
-  const [pushKey, setPushKey] = useState(store.settings.spug_push_key);
+  const [pushKey, setPushKey] = useState(store.settings.TurboAI_push_key);
 
   useEffect(() => {
     if (pushKey) {
@@ -37,7 +33,7 @@ export default observer(function () {
   function handleBind() {
     if (!pushKey) return message.error('请输入要绑定的推送助手用户ID')
     setLoading(true);
-    http.post('/api/setting/push/bind/', {spug_push_key: pushKey})
+    http.post('/api/setting/push/bind/', {TurboAI_push_key: pushKey})
       .then(res => {
         message.success('绑定成功');
         store.fetchSettings();
@@ -52,7 +48,7 @@ export default observer(function () {
       return
     }
     setLoading(true);
-    http.post('/api/setting/push/bind/', {spug_push_key: ''})
+    http.post('/api/setting/push/bind/', {TurboAI_push_key: ''})
       .then(() => {
         message.success('解绑成功');
         store.fetchSettings();
@@ -63,19 +59,19 @@ export default observer(function () {
   }
 
   const isVip = balance.is_vip
-  const spugPushKey = store.settings.spug_push_key
+  const TurboAIPushKey = store.settings.TurboAI_push_key
   return (
     <Spin spinning={fetching}>
       <div className={css.title}>推送服务设置</div>
       <div style={{maxWidth: 340}}>
         <Form.Item label="推送助手账户绑定" labelCol={{span: 24}} style={{marginTop: 12}}
                    extra={<div>请登录推送助手，至个人中心 / 个人设置查看用户ID，注意保密该ID请勿泄漏给第三方。<Link
-                     href="https://push.spug.cc/guide/spug" title="配置手册"/></div>}>
+                     href="https://push.TurboAI.cc/guide/TurboAI" title="配置手册"/></div>}>
 
-          {spugPushKey ? (
+          {TurboAIPushKey ? (
             <Input.Group compact>
               <div className={css.keyText}
-                   style={{width: 'calc(100% - 100px)', lineHeight: '32px', fontWeight: 'bold'}}>{spugPushKey}</div>
+                   style={{width: 'calc(100% - 100px)', lineHeight: '32px', fontWeight: 'bold'}}>{TurboAIPushKey}</div>
               <Popconfirm title="确定要解除绑定？" onConfirm={handleUnbind}>
                 <Button ghost type="danger" style={{width: 80, marginLeft: 20}} loading={loading}>解绑</Button>
               </Popconfirm>
@@ -100,7 +96,7 @@ export default observer(function () {
 
       {balance.vip_desc ? (
         <Form.Item style={{marginTop: 24}}
-                   extra={<div> 如需充值请至 <Link href="https://push.spug.cc/buy/sms" title="推送助手"/>，具体计费规则及说明请查看推送助手官网。
+                   extra={<div> 如需充值请至 <Link href="https://push.TurboAI.cc/buy/sms" title="推送助手"/>，具体计费规则及说明请查看推送助手官网。
                    </div>}>
           <div className={css.statistic}>
             <div className={css.body}>
@@ -118,7 +114,7 @@ export default observer(function () {
                 {isVip ? (
                   <div className={clsNames(css.tips, css.active)}>+ 会员赠送{balance.mail_free}封 / 天</div>
                 ) : (
-                  <Link href="https://push.spug.cc/buy/vip" title={`订阅会员每天赠送${balance.mail_free}封`}
+                  <Link href="https://push.TurboAI.cc/buy/vip" title={`订阅会员每天赠送${balance.mail_free}封`}
                         className={css.tips}/>
                 )}
               </div>
@@ -128,11 +124,11 @@ export default observer(function () {
                 {isVip ? (
                   <div className={clsNames(css.tips, css.active)}>+ 会员赠送{balance.wx_mp_free}条 / 天</div>
                 ) : (
-                  <Link href="https://push.spug.cc/buy/vip" title={`订阅会员每天赠送${balance.wx_mp_free}条`}
+                  <Link href="https://push.TurboAI.cc/buy/vip" title={`订阅会员每天赠送${balance.wx_mp_free}条`}
                         className={css.tips}/>
                 )}
               </div>
-              <Link href="https://push.spug.cc/buy/vip" className={css.badge} title={balance.vip_desc}/>
+              <Link href="https://push.TurboAI.cc/buy/vip" className={css.badge} title={balance.vip_desc}/>
             </div>
           </div>
         </Form.Item>

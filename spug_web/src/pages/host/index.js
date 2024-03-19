@@ -1,8 +1,4 @@
-/**
- * Copyright (c) OpenSpug Organization. https://github.com/openspug/spug
- * Copyright (c) <spug.dev@gmail.com>
- * Released under the AGPL-3.0 License.
- */
+
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { Row, Col } from 'antd';
@@ -30,16 +26,16 @@ export default observer(function () {
   return (
     <AuthDiv auth="host.host.view">
       <Breadcrumb extra={<AuthButton auth="host.console.view|host.console.list" type="primary" icon={<CodeOutlined/>}
-                                     onClick={openTerminal}>Web 终端</AuthButton>}>
-        <Breadcrumb.Item>首页</Breadcrumb.Item>
-        <Breadcrumb.Item>主机管理</Breadcrumb.Item>
+                                     onClick={openTerminal}>Web SSH</AuthButton>}>
+        <Breadcrumb.Item>homepage</Breadcrumb.Item>
+        <Breadcrumb.Item>Server Management </Breadcrumb.Item>
       </Breadcrumb>
 
       <Row gutter={12}>
-        <Col span={6}>
+        {/* <Col span={6}>
           <Group/>
-        </Col>
-        <Col span={18}>
+        </Col> */}
+        <Col span={24}>
           <ComTable/>
         </Col>
       </Row>

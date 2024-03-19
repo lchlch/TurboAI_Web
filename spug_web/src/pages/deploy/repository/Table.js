@@ -1,8 +1,4 @@
-/**
- * Copyright (c) OpenSpug Organization. https://github.com/openspug/spug
- * Copyright (c) <spug.dev@gmail.com>
- * Released under the AGPL-3.0 License.
- */
+
 import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import { Table, Modal, Tag, message } from 'antd';
@@ -51,7 +47,7 @@ function ComTable() {
               <Action.Button
                 auth="deploy.repository.build"
                 loading={loading === info.id}
-                disabled={info.remarks === 'SPUG AUTO MAKE'}
+                disabled={info.remarks === 'TurboAI AUTO MAKE'}
                 onClick={() => handleRebuild(info)}>构建</Action.Button>
               <Action.Button auth="deploy.repository.build" onClick={() => store.showConsole(info)}>日志</Action.Button>
             </Action>

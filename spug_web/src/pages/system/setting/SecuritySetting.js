@@ -1,8 +1,4 @@
-/**
- * Copyright (c) OpenSpug Organization. https://github.com/openspug/spug
- * Copyright (c) <spug.dev@gmail.com>
- * Released under the AGPL-3.0 License.
- */
+
 import React, {useState, useEffect} from 'react';
 import {observer} from 'mobx-react';
 import {Form, Switch, Input, Space, Spin, message, Button} from 'antd';
@@ -44,7 +40,7 @@ export default observer(function () {
   }
 
   function handleChangeMFA(v) {
-    if (v && !store.settings.spug_push_key) return message.error('开启MFA认证需要先在推送服务设置中绑定推送助手账户');
+    if (v && !store.settings.TurboAI_push_key) return message.error('开启MFA认证需要先在推送服务设置中绑定推送助手账户');
     v ? setVisible(true) : handleMFAModify(false)
   }
 
@@ -74,7 +70,7 @@ export default observer(function () {
         <Form.Item
           label="访问IP校验"
           extra={<span>建议开启，校验是否获取了真实的访问者IP，防止因为增加的反向代理层导致基于IP的安全策略失效，当校验失败时会在登录时弹窗提醒。如果你在内网部署且仅在内网使用可以关闭该特性。<a
-            href="https://spug.cc/docs/practice"
+            href="https://TurboAI.cc/docs/practice"
             target="_blank" rel="noopener noreferrer">为什么没有获取到真实IP？</a></span>}>
           <Switch
             checkedChildren="开启"
@@ -97,7 +93,7 @@ export default observer(function () {
           extra={visible ? '输入验证码，通过验证后开启。' :
             <span>建议开启，登录时额外使用验证码进行身份验证。开启前至少要确保管理员账户配置了MFA标识（账户管理/编辑），开启后未配置的账户将无法登录。<a
               target="_blank" rel="noopener noreferrer"
-              href="https://push.spug.cc/guide/spug">配置手册</a></span>}>
+              href="https://push.TurboAI.cc/guide/TurboAI">配置手册</a></span>}>
           {visible ? (
             <div style={{display: 'flex', width: 490}}>
               <Form.Item noStyle extra="验证通过后开启MFA（两步验证）。">

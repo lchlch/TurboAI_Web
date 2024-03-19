@@ -1,0 +1,12 @@
+{
+  "login": "login",
+  "userPlaceholder": "please input username",
+  "pwdPlaceholder": "please input password",
+  "dashboard": "dashboard",
+  "serverManagement": "Server Management",
+  "batchExecution": "Batch Execution",
+  "monitoringCenter": "Monitoring Center",
+  "officialWebsite": "Official Website",
+  "executeTasks": "Execute Tasks",
+  "fileDistribution": "File Distribution"
+}

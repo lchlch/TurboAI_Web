@@ -1,8 +1,4 @@
-/**
- * Copyright (c) OpenSpug Organization. https://github.com/openspug/spug
- * Copyright (c) <spug.dev@gmail.com>
- * Released under the AGPL-3.0 License.
- */
+
 import React, { useState, useEffect } from 'react';
 import { Drawer, Form, Button, Select, Space, message } from 'antd';
 import themes from './themes';
@@ -72,14 +68,14 @@ function Setting(props) {
           <Space wrap className={css.theme} size={12}>
             {Object.entries(themes).map(([key, item]) => (
               <pre key={key} style={{background: item.background, color: item.foreground}}
-                   onClick={() => setTheme(key)}>spug</pre>))}
+                   onClick={() => setTheme(key)}>TurboAI</pre>))}
           </Space>
         </Form.Item>
         <Form.Item label="预览">
           <div className={css.preview}
                style={{fontSize, fontFamily, background: styles.background, color: styles.foreground}}>
-            <div>Welcome to Spug !</div>
-            <div>* Website: https://spug.cc</div>
+            <div>Welcome to TurboAI !</div>
+            <div>* Website: https://TurboAI.cc</div>
             <div>[root@iZ8vb48roZ ~]# ls</div>
             <div>
               <span style={{color: styles.brightBlue}}>apps </span>

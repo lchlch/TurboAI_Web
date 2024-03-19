@@ -1,6 +1,6 @@
 /**
- * Copyright (c) OpenSpug Organization. https://github.com/openspug/spug
- * Copyright (c) <spug.dev@gmail.com>
+ * Copyright (c) OpenTurboAI Organization. https://github.com/openTurboAI/TurboAI
+ * Copyright (c) <TurboAI.dev@gmail.com>
  * Released under the MIT License.
  */
 import React from 'react';

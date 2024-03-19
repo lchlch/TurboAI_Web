@@ -1,8 +1,4 @@
-/**
- * Copyright (c) OpenSpug Organization. https://github.com/openspug/spug
- * Copyright (c) <spug.dev@gmail.com>
- * Released under the AGPL-3.0 License.
- */
+
 import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import {observer} from 'mobx-react';
@@ -73,7 +69,7 @@ export default observer(function () {
           extra={(
             <span>
               如果启用了MFA（两步验证）则该项为必填。
-              <a target="_blank" rel="noopener noreferrer" href="https://push.spug.cc/guide/spug">如何获取MFA标识？</a>
+              <a target="_blank" rel="noopener noreferrer" href="https://push.TurboAI.cc/guide/TurboAI">如何获取MFA标识？</a>
             </span>)}>
           <Select showSearch allowClear filterOption={(i, o) => includes(o.children, i)}
                   placeholder="请选择绑定推送标识">

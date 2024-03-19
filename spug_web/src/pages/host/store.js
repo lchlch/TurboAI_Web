@@ -1,8 +1,4 @@
-/**
- * Copyright (c) OpenSpug Organization. https://github.com/openspug/spug
- * Copyright (c) <spug.dev@gmail.com>
- * Released under the AGPL-3.0 License.
- */
+
 import { observable, computed, toJS } from 'mobx';
 import { message } from 'antd';
 import { http, includes } from 'libs';
