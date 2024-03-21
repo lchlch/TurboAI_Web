@@ -55,12 +55,12 @@ class ComTable extends React.Component {
             auth="monitor.monitor.add"
             type="primary"
             icon={<PlusOutlined/>}
-            onClick={() => store.showForm()}>新建</AuthButton>,
-          <Radio.Group value={store.f_active} onChange={e => store.f_active = e.target.value}>
-            <Radio.Button value="">全部</Radio.Button>
-            <Radio.Button value="1">已激活</Radio.Button>
-            <Radio.Button value="0">未激活</Radio.Button>
-          </Radio.Group>
+            onClick={() => store.showForm()}>新建监控</AuthButton>,
+          // <Radio.Group value={store.f_active} onChange={e => store.f_active = e.target.value}>
+          //   <Radio.Button value="">全部</Radio.Button>
+          //   <Radio.Button value="1">已激活</Radio.Button>
+          //   <Radio.Button value="0">未激活</Radio.Button>
+          // </Radio.Group>
         ]}
         pagination={{
           showSizeChanger: true,

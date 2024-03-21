@@ -116,9 +116,9 @@ function TransferIndex() {
         <Card type="inner" title={`数据源${files.length ? `（${files.length}）` : ''}`} extra={(<Space size={24}>
           <Upload multiple beforeUpload={handleUpload}><Space
             className="btn"><UploadOutlined/>上传本地文件</Space></Upload>
-          <HostSelector onlyOne mode="rows" onChange={row => makeFile(row)}>
+          {/* <HostSelector onlyOne mode="rows" onChange={row => makeFile(row)}>
             <Space className="btn"><CloudServerOutlined/>添加主机文件</Space>
-          </HostSelector>
+          </HostSelector> */}
         </Space>)}>
           <Table rowKey="id" className={style.table} showHeader={false} pagination={false} size="small"
                  dataSource={files}>

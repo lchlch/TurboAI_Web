@@ -93,11 +93,11 @@ function TaskIndex() {
               value={interpreter}
               onChange={e => setInterpreter(e.target.value)}>
               <Radio.Button value="sh" style={{width: 80, textAlign: 'center'}}>Shell</Radio.Button>
-              <Radio.Button value="python" style={{width: 80, textAlign: 'center'}}>Python</Radio.Button>
+              {/* <Radio.Button value="python" style={{width: 80, textAlign: 'center'}}>Python</Radio.Button> */}
             </Radio.Group>
-            <a href="https://TurboAI.cc/docs/batch-exec" target="_blank" rel="noopener noreferrer"
-               className={style.tips}><BulbOutlined/> 使用全局变量？</a>
-            <Button style={{float: 'right'}} icon={<PlusOutlined/>} onClick={store.switchTemplate}>从执行模版中选择</Button>
+            {/* <a href="https://TurboAI.cc/docs/batch-exec" target="_blank" rel="noopener noreferrer"
+               className={style.tips}><BulbOutlined/> 使用全局变量？</a> */}
+            {/* <Button style={{float: 'right'}} icon={<PlusOutlined/>} onClick={store.switchTemplate}>从执行模版中选择</Button> */}
             <ACEditor className={style.editor} mode={interpreter} value={command} width="100%" onChange={setCommand}/>
           </Form.Item>
           <Button loading={loading} icon={<ThunderboltOutlined/>} type="primary"

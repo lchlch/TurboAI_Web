@@ -16,33 +16,39 @@ class Store {
   @observable formVisible = false;
   @observable importVisible = false;
   @observable syncVisible = false;
+  @observable logVisible = false;
   @observable cloudImport = null;
   @observable detailVisible = false;
   @observable selectorVisible = false;
+  @observable isEdit = false;
+  @observable show = 0; // 0 正常表格， 1 webssh, 2 wenjian, 3 grafana
+  @observable buildOsForm = 0; // 0 不展示， 1 新装机, 2 重装
+
+  @observable hostStatus = 0;
 
   @observable f_word;
   @observable f_status = '';
 
   @computed get records() {
     let records = this.rawRecords;
-    if (this.f_word) {
-      records = records.filter(x => {
-        if (includes(x.name, this.f_word)) return true
-        if (x.public_ip_address && includes(x.public_ip_address[0], this.f_word)) return true
-        return !!(x.private_ip_address && includes(x.private_ip_address[0], this.f_word));
-      });
-    }
+    // if (this.f_word) {
+    //   records = records.filter(x => {
+    //     if (includes(x.name, this.f_word)) return true
+    //     if (x.public_ip_address && includes(x.public_ip_address[0], this.f_word)) return true
+    //     return !!(x.private_ip_address && includes(x.private_ip_address[0], this.f_word));
+    //   });
+    // }
     return records
   }
 
   @computed get dataSource() {
-    let records = [];
-    if (this.group.key) {
-      const host_ids = this.counter[this.group.key]
-      records = this.records.filter(x => host_ids && host_ids.has(x.id));
-    }
-    if (this.f_status !== '') records = records.filter(x => this.f_status === x.is_verified);
-    return records
+    // let records = [];
+    // if (this.group.key) {
+    //   const host_ids = this.counter[this.group.key]
+    //   records = this.records.filter(x => host_ids && host_ids.has(x.id));
+    // }
+    // if (this.f_status !== '') records = records.filter(x => this.f_status === x.is_verified);
+    return this.records
   }
 
   @computed get counter() {
@@ -72,12 +78,15 @@ class Store {
 
   fetchRecords = () => {
     this.isFetching = true;
-    return http.get('/api/host/')
+    return http.get('/api/v1/dao/hostList/list')
       .then(res => {
-        const tmp = {};
-        this.rawRecords = res;
-        this.rawRecords.map(item => tmp[item.id] = item);
-        this.idMap = tmp;
+        // const tmp = {};
+        this.rawRecords = res.map(item => {
+          item.id = item.id.toString()
+          return item;
+        });
+        // this.rawRecords.map(item => tmp[item.id] = item);
+        // this.idMap = tmp;
       })
       .finally(() => this.isFetching = false)
   };
@@ -101,14 +110,17 @@ class Store {
     if (this.rawRecords.length > 0) return Promise.resolve()
     this.isFetching = true;
     this.grpFetching = true;
-    return http.all([http.get('/api/host/'), http.get('/api/host/group/')])
-      .then(http.spread((res1, res2) => {
-        this.rawRecords = res1;
-        this.rawRecords.map(item => this.idMap[item.id] = item);
-        this.groups = res2.groups;
-        this.rawTreeData = res2.treeData;
-        this.group = this.treeData[0] || {};
-      }))
+    return http.get('/api/v1/dao/hostList/list')
+      .then((res1) => {
+        this.rawRecords = res1.map(item => {
+          item.id = item.id.toString()
+          return item;
+        });
+        // this.rawRecords.map(item => this.idMap[item.id] = item);
+        // this.groups = res2.groups;
+        // this.rawTreeData = res2.treeData;
+        // this.group = this.treeData[0] || {};
+      })
       .finally(() => {
         this.isFetching = false;
         this.grpFetching = false
@@ -124,9 +136,12 @@ class Store {
       })
   }
 
-  showForm = (info = {}) => {
+  showForm = (info) => {
     this.formVisible = true;
-    this.record = info
+    if(info) {
+      this.record = info
+      this.isEdit = true;
+    }
   }
 
   showSync = () => {

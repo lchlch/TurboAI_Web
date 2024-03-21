@@ -8,5 +8,7 @@
   "monitoringCenter": "监控中心",
   "officialWebsite": "官网",
   "executeTasks": "执行任务",
-  "fileDistribution": "文件分发"
+  "fileDistribution": "文件分发",
+  "ImageManagement": "镜像管理",
+  "rawHostManagement": "主机录入"
 }

@@ -70,11 +70,11 @@ export default observer(function () {
   }
 
   function toNext() {
-    const {type, extra} = store.record;
-    if (!Number(extra) > 0) {
-      if (type === '1' && extra) return message.error('请输入正确的响应时间')
-      if (type === '2') return message.error('请输入正确的端口号')
-    }
+    // const {type, extra} = store.record;
+    // if (!Number(extra) > 0) {
+    //   if (type === '1' && extra) return message.error('请输入正确的响应时间')
+    //   if (type === '2') return message.error('请输入正确的端口号')
+    // }
     store.page += 1;
   }
 
@@ -157,7 +157,8 @@ export default observer(function () {
       </Form.Item>
 
       <Form.Item wrapperCol={{span: 14, offset: 6}} style={{marginTop: 12}}>
-        <Button disabled={!canNext()} type="primary" onClick={toNext}>下一步</Button>
+        {/* <Button disabled={!canNext()} type="primary" onClick={toNext}>下一步</Button> */}
+        <Button type="primary" onClick={toNext}>下一步</Button>
         <Button disabled={!canNext()} type="link" loading={loading} onClick={handleTest}>执行测试</Button>
         <span style={{color: '#888', fontSize: 12}}>Tips: 仅测试第一个监控地址</span>
       </Form.Item>

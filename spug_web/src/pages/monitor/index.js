@@ -14,7 +14,7 @@ export default observer(function () {
         <Breadcrumb.Item>首页</Breadcrumb.Item>
         <Breadcrumb.Item>监控中心</Breadcrumb.Item>
       </Breadcrumb>
-      <MonitorCard/>
+      {/* <MonitorCard/> */}
       <ComTable/>
       {store.formVisible && <ComForm/>}
     </AuthDiv>

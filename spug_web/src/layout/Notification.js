@@ -53,13 +53,13 @@ export default function () {
   }, [])
 
   function fetch() {
-    setLoading(true);
-    http.get('/api/notify/')
-      .then(res => {
-        setReads(res.filter(x => !x.unread).map(x => x.id))
-        setNotifies(res);
-      })
-      .finally(() => setLoading(false))
+    // setLoading(true);
+    // http.get('/api/notify/')
+    //   .then(res => {
+    //     setReads(res.filter(x => !x.unread).map(x => x.id))
+    //     setNotifies(res);
+    //   })
+    //   .finally(() => setLoading(false))
   }
 
   function listen() {

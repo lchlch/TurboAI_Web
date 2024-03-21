@@ -13,13 +13,13 @@ export default function () {
   const [range, setRange] = useState('day');
   const [res, setRes] = useState([])
 
-  useEffect(() => {
-    setLoading(true);
-    const strDuration = duration.map(x => x.format('YYYY-MM-DD'))
-    http.post('/api/home/request/', {duration: strDuration})
-      .then(res => setRes(res))
-      .finally(() => setLoading(false))
-  }, [duration])
+  // useEffect(() => {
+  //   setLoading(true);
+  //   const strDuration = duration.map(x => x.format('YYYY-MM-DD'))
+  //   http.post('/api/home/request/', {duration: strDuration})
+  //     .then(res => setRes(res))
+  //     .finally(() => setLoading(false))
+  // }, [duration])
 
   function handleClick(val) {
     let duration = [];
@@ -46,7 +46,7 @@ export default function () {
   }
 
   return (
-    <Card loading={loading} title="发布申请Top20" style={{marginTop: 20}} bodyStyle={{height: 353}} extra={(
+    <Card loading={loading} title="告警情况" style={{marginTop: 20}} bodyStyle={{height: 353}} extra={(
       <div style={{display: 'flex', alignItems: 'center'}}>
         <span className={range === 'day' ? styles.spanButtonActive : styles.spanButton}
               onClick={() => handleClick('day')}>今日</span>

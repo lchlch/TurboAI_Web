@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React from "react";
 import {
   DashboardOutlined,
   DesktopOutlined,
@@ -10,53 +9,81 @@ import {
   DeploymentUnitOutlined,
   MonitorOutlined,
   AlertOutlined,
-  SettingOutlined
-} from '@ant-design/icons';
+  SettingOutlined,
+} from "@ant-design/icons";
 
-import HomeIndex from './pages/home';
-import DashboardIndex from './pages/dashboard';
-import HostIndex from './pages/host';
-import ExecTask from './pages/exec/task';
-import ExecTemplate from './pages/exec/template';
-import ExecTransfer from './pages/exec/transfer';
-import DeployApp from './pages/deploy/app';
-import DeployRepository from './pages/deploy/repository';
-import DeployRequest from './pages/deploy/request';
-import ScheduleIndex from './pages/schedule';
-import ConfigEnvironment from './pages/config/environment';
-import ConfigService from './pages/config/service';
-import ConfigApp from './pages/config/app';
-import ConfigSetting from './pages/config/setting';
-import MonitorIndex from './pages/monitor';
-import AlarmIndex from './pages/alarm/alarm';
-import AlarmGroup from './pages/alarm/group';
-import AlarmContact from './pages/alarm/contact';
-import SystemAccount from './pages/system/account';
-import SystemRole from './pages/system/role';
-import SystemSetting from './pages/system/setting';
-import SystemLogin from './pages/system/login';
-import WelcomeIndex from './pages/welcome/index';
-import WelcomeInfo from './pages/welcome/info';
+import HomeIndex from "./pages/home";
+import DashboardIndex from "./pages/dashboard";
+import HostIndex from "./pages/host";
+import RawHostIndex from "./pages/rawhost";
+import ExecTask from "./pages/exec/task";
+import ExecTemplate from "./pages/exec/template";
+import ExecTransfer from "./pages/exec/transfer";
+import DeployApp from "./pages/deploy/app";
+import DeployRepository from "./pages/deploy/repository";
+import DeployRequest from "./pages/deploy/request";
+import ScheduleIndex from "./pages/schedule";
+import ConfigEnvironment from "./pages/config/environment";
+import ConfigService from "./pages/config/service";
+import ConfigApp from "./pages/config/app";
+import ConfigSetting from "./pages/config/setting";
+import MonitorIndex from "./pages/monitor";
+import ImageIndex from "./pages/images";
+import AlarmIndex from "./pages/alarm/alarm";
+import AlarmGroup from "./pages/alarm/group";
+import AlarmContact from "./pages/alarm/contact";
+import SystemAccount from "./pages/system/account";
+import SystemRole from "./pages/system/role";
+import SystemSetting from "./pages/system/setting";
+import SystemLogin from "./pages/system/login";
+import WelcomeIndex from "./pages/welcome/index";
+import WelcomeInfo from "./pages/welcome/info";
 
-import i18next from './i18next';
+import i18next from "./i18next";
 const { t } = i18next;
 
 export default [
   // {icon: <DesktopOutlined/>, title: '工作台', path: '/home', component: HomeIndex},
   {
-    icon: <DashboardOutlined/>,
-    title: 'Dashboard',
-    auth: 'dashboard.dashboard.view',
-    path: '/dashboard',
-    component: DashboardIndex
+    icon: <DashboardOutlined />,
+    title: "Dashboard",
+    auth: "dashboard.dashboard.view",
+    path: "/dashboard",
+    component: DashboardIndex,
   },
-  {icon: <CloudServerOutlined/>, title: t('serverManagement'), auth: 'host.host.view', path: '/host', component: HostIndex},
   {
-    icon: <CodeOutlined/>, title: t('batchExecution'), auth: 'exec.task.do|exec.template.view', child: [
-      {title: t('executeTasks'), auth: 'exec.task.do', path: '/exec/task', component: ExecTask},
+    icon: <CloudServerOutlined />,
+    title: t("serverManagement"),
+    auth: "host.host.view",
+    path: "/host",
+    component: HostIndex,
+  },
+  {
+    icon: <DeploymentUnitOutlined />,
+    title: t("rawHostManagement"),
+    auth: "host.host.view",
+    path: "/rawhost",
+    component: RawHostIndex,
+  },
+  {
+    icon: <CodeOutlined />,
+    title: t("batchExecution"),
+    auth: "exec.task.do|exec.template.view",
+    child: [
+      {
+        title: t("executeTasks"),
+        auth: "exec.task.do",
+        path: "/exec/task",
+        component: ExecTask,
+      },
       // {title: '模板管理', auth: 'exec.template.view', path: '/exec/template', component: ExecTemplate},
-      {title: t('fileDistribution'), auth: 'exec.transfer.do', path: '/exec/transfer', component: ExecTransfer},
-    ]
+      {
+        title: t("fileDistribution"),
+        auth: "exec.transfer.do",
+        path: "/exec/transfer",
+        component: ExecTransfer,
+      },
+    ],
   },
   // {
   //   icon: <FlagOutlined/>, title: '应用发布', auth: 'deploy.app.view|deploy.repository.view|deploy.request.view', child: [
@@ -80,7 +107,20 @@ export default [
   //     {path: '/config/setting/:type/:id', component: ConfigSetting},
   //   ]
   // },
-  {icon: <MonitorOutlined/>, title: t('monitoringCenter'), auth: 'monitor.monitor.view', path: '/monitor', component: MonitorIndex},
+  {
+    icon: <MonitorOutlined />,
+    title: t("monitoringCenter"),
+    auth: "monitor.monitor.view",
+    path: "/monitor",
+    component: MonitorIndex,
+  },
+  {
+    icon: <ScheduleOutlined />,
+    title: t("ImageManagement"),
+    auth: "monitor.monitor.view",
+    path: "/images",
+    component: ImageIndex,
+  },
   // {
   //   icon: <AlertOutlined/>, title: '报警中心', auth: 'alarm.alarm.view|alarm.contact.view|alarm.group.view', child: [
   //     {title: '报警历史', auth: 'alarm.alarm.view', path: '/alarm/alarm', component: AlarmIndex},
@@ -96,6 +136,6 @@ export default [
   //     {title: '系统设置', auth: 'system.setting.view', path: '/system/setting', component: SystemSetting},
   //   ]
   // },
-  {path: '/welcome/index', component: WelcomeIndex},
-  {path: '/welcome/info', component: WelcomeInfo},
-]
+  { path: "/welcome/index", component: WelcomeIndex },
+  { path: "/welcome/info", component: WelcomeInfo },
+];
