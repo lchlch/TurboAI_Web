@@ -1,78 +1,185 @@
-import React, { useState } from "react";
+import React from "react";
 import { observer } from "mobx-react";
-import { DownOutlined, SmileOutlined } from "@ant-design/icons";
-import { Dropdown, Menu, Space } from "antd";
+import { DownOutlined } from "@ant-design/icons";
+import { Dropdown, Menu, Space, Modal, message } from "antd";
+import { http } from "libs";
 import store from "./store";
+import { AuthButton } from "components";
 
-export default observer(function () {
-  function changeStoreShow(key, value) {
-    store[key] = value;
+export default observer(function (props) {
+  function changeStoreShow(key, value, operation) {
+    if (key) {
+      store[key] = value;
+    }
+    //when reboot and shutdown, key is null
+    if (!key) {
+      handleConfirm(operation);
+    }
+    store.curOperationHostInfo = props.info;
   }
+
+  const isDisabled = props.info.hostStatus === 2;
+
+  // shutdown or reboot
+  function handleConfirm(operation) {
+    const apis = {
+      shutdown: "api/v1/server/bash/shutdown",
+      reboot: "api/v1/server/bash/reboot",
+    };
+    Modal.confirm({
+      title: "operation confirm",
+      content: `ready to ${operation}?`,
+      onOk: () => {
+        return http
+          .get(apis[operation], { params: { ids: props.info.hostId } })
+          .then(() => {
+            message.success(`${operation} success`);
+            store.fetchRecords();
+          });
+      },
+    });
+  }
+
+  // const menu = (
+  //   <Menu>
+  //     <Menu.Item>
+  //       <span onClick={() => changeStoreShow("show", 3)}>查看详情</span>
+  //     </Menu.Item>
+
+  //     <Menu.Item>
+  //       <span onClick={() => changeStoreShow(null, null, "reboot")}>重启</span>
+  //     </Menu.Item>
+  //     <Menu.Item>
+  //       <span onClick={() => changeStoreShow("buildOsForm", 1)}>安装系统</span>
+  //     </Menu.Item>
+  //     <Menu.Item>
+  //       <span onClick={() => changeStoreShow("buildOsForm", 2)}>重装</span>
+  //     </Menu.Item>
+  //     <Menu.Item>
+  //       <span onClick={() => changeStoreShow("show", 1)}>webssh</span>
+  //     </Menu.Item>
+  //     <Menu.Item>
+  //       <span onClick={() => changeStoreShow(null, null, "shutdown")}>
+  //         关机
+  //       </span>
+  //     </Menu.Item>
+  //     <Menu.Item>
+  //       <span onClick={() => changeStoreShow("logVisible", true)}>
+  //         查看日志
+  //       </span>
+  //     </Menu.Item>
+  //     <Menu.Item>
+  //       <span onClick={() => changeStoreShow("show", 2)}>文件传输</span>
+  //     </Menu.Item>
+  //   </Menu>
+  // );
 
   const menu = (
     <Menu
       items={[
         {
-          key: "1",
+          key: "key-1",
           label: (
-            <span onClick={() => changeStoreShow("show", 3)}>查看详情</span>
+            <AuthButton
+              type="link"
+              disabled={isDisabled}
+              onClick={() => changeStoreShow("show", 3)}
+              auth="query"
+            >
+              host detail
+            </AuthButton>
           ),
         },
         {
-          key: "2",
+          key: "key-2",
           label: (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://www.aliyun.com"
+            <AuthButton
+              type="link"
+              disabled={isDisabled}
+              onClick={() => changeStoreShow(null, null, "reboot")}
+              auth="cmd"
             >
-              重启
-            </a>
+              reboot
+            </AuthButton>
           ),
           // icon: <SmileOutlined />,
         },
         {
-          key: "3",
+          key: "key-3",
           label: (
-            <span onClick={() => changeStoreShow("buildOsForm", 1)}>安装系统</span>
-          ),
-        },
-        {
-          key: "4",
-          danger: true,
-          label: (
-            <span onClick={() => changeStoreShow("buildOsForm", 2)}>重装</span>
-          ),
-        },
-        {
-          key: "5",
-          danger: true,
-          label: <span onClick={() => changeStoreShow("show", 1)}>webssh</span>,
-        },
-        {
-          key: "6",
-          label: (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://www.luohanacademy.com"
+            <AuthButton
+              type="link"
+              disabled={isDisabled}
+              onClick={() => changeStoreShow("buildOsForm", 1)}
+              auth="cmd"
             >
-              关机
-            </a>
+              install OS
+            </AuthButton>
           ),
         },
         {
-          key: "7",
+          key: "key-4",
           label: (
-            <span onClick={() => changeStoreShow("logVisible", true)}>
-              查看日志
-            </span>
+            <AuthButton
+              type="link"
+              disabled={isDisabled}
+              onClick={() => changeStoreShow("buildOsForm", 2)}
+              auth="cmd"
+            >
+              reinstall OS
+            </AuthButton>
           ),
         },
         {
-          key: "8",
+          key: "key-5",
           label: (
-            <span onClick={() => changeStoreShow("show", 2)}>文件上传</span>
+            <AuthButton
+              type="link"
+              disabled={isDisabled}
+              onClick={() => changeStoreShow("show", 1)}
+              auth="ssh"
+            >
+              webssh
+            </AuthButton>
+          ),
+        },
+        {
+          key: "key-6",
+          label: (
+            <AuthButton
+              type="link"
+              disabled={isDisabled}
+              onClick={() => changeStoreShow(null, null, "shutdown")}
+              auth="cmd"
+            >
+              shutdown
+            </AuthButton>
+          ),
+        },
+        {
+          key: "key-7",
+          label: (
+            <AuthButton
+              type="link"
+              disabled={isDisabled}
+              onClick={() => changeStoreShow("logVisible", true)}
+              auth="log"
+            >
+              logs
+            </AuthButton>
+          ),
+        },
+        {
+          key: "key-8",
+          label: (
+            <AuthButton
+              type="link"
+              disabled={isDisabled}
+              onClick={() => changeStoreShow("show", 2)}
+              auth="file"
+            >
+              file transfer
+            </AuthButton>
           ),
         },
       ]}
@@ -81,12 +188,12 @@ export default observer(function () {
 
   return (
     <Dropdown overlay={menu}>
-      <a onClick={(e) => e.preventDefault()}>
+      <AuthButton onClick={(e) => e.preventDefault()} type="link" style={{padding: 0}}>
         <Space>
-          主机操作
+          Host Operations
           <DownOutlined />
         </Space>
-      </a>
+      </AuthButton>
     </Dropdown>
   );
 });

@@ -10,5 +10,12 @@
   "executeTasks": "执行任务",
   "fileDistribution": "文件分发",
   "ImageManagement": "镜像管理",
-  "rawHostManagement": "主机录入"
+  "rawHostManagement": "主机录入",
+  "hostbuy": "服务器购买",
+  "userManagement": "用户管理",
+  "operateLogs": "操作日志",
+  "accountManagement": "账户管理",
+  "roleManagement": "角色管理",
+  "enterpriseAccounts": "企业管理",
+  "systemManagement": "系统设置"
 }

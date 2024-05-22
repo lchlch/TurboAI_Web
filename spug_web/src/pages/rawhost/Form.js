@@ -1,62 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react";
-import { ExclamationCircleOutlined, UploadOutlined } from "@ant-design/icons";
+// import { ExclamationCircleOutlined, UploadOutlined } from "@ant-design/icons";
 import {
   Modal,
   Form,
   Input,
-  TreeSelect,
-  Button,
-  Upload,
-  Alert,
+  // TreeSelect,
+  // Button,
+  // Upload,
+  // Alert,
   message,
 } from "antd";
-import { http, X_TOKEN } from "libs";
+import { http } from "libs";
 import store from "./store";
-import styles from "./index.module.less";
+// import styles from "./index.module.less";
 import { v4 as uuidv4 } from "uuid";
 
 export default observer(function () {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const [fileList, setFileList] = useState([]);
+  // const [uploading, setUploading] = useState(false);
+  // const [fileList, setFileList] = useState([]);
 
   useEffect(() => {
     if (store.record.pkey) {
-      setFileList([{ uid: "0", name: "独立密钥", data: store.record.pkey }]);
+      // setFileList([{ uid: "0", name: "独立密钥", data: store.record.pkey }]);
     }
   }, []);
 
-  // function handleSubmit() {
-  //   setLoading(true);
-  //   const formData = form.getFieldsValue();
-  //   // formData['id'] = store.record.id;
-  //   // const file = fileList[0];
-  //   // if (file && file.data) formData['pkey'] = file.data;
-  //   http.post('/api/v1/dao/hostList', formData)
-  //     .then(res => {
-  //       if (res === 'auth fail') {
-  //         setLoading(false)
-  //         if (formData.pkey) {
-  //           message.error('独立密钥认证失败')
-  //         } else {
-  //           const onChange = v => formData.password = v;
-  //           Modal.confirm({
-  //             icon: <ExclamationCircleOutlined/>,
-  //             title: '首次验证请输入密码',
-  //             content: <ConfirmForm username={formData.username} onChange={onChange}/>,
-  //             onOk: () => handleConfirm(formData),
-  //           })
-  //         }
-  //       } else {
-  //         message.success('验证成功');
-  //         store.formVisible = false;
-  //         store.fetchRecords();
-  //         store.fetchExtend(res.id)
-  //       }
-  //     }, () => setLoading(false))
-  // }
 
   function handleSubmit() {
     setLoading(true);
@@ -67,48 +38,46 @@ export default observer(function () {
     const data = store.isEdit
       ? { ...store.record, ...formData }
       : { ...formData, uuid };
-    return request("/api/v1/dao/hostList", { ...data }).then(
-      (res) => {
-        setLoading(true);
-        message.success("新增成功");
-        store.formVisible = false;
-        store.fetchRecords();
-        // store.fetchExtend(res.id)
-      }
-    );
+    return request("/api/v1/server/host", { ...data }).then((res) => {
+      setLoading(true);
+      message.success("add success");
+      store.formVisible = false;
+      store.fetchRecords();
+      // store.fetchExtend(res.hostId)
+    });
   }
 
-  const ConfirmForm = (props) => (
-    <Form layout="vertical" style={{ marginTop: 24 }}>
-      <Form.Item
-        required
-        label="授权密码"
-        extra={`用户 ${props.username} 的密码， 该密码仅做首次验证使用，不会存储该密码。`}
-      >
-        <Input.Password onChange={(e) => props.onChange(e.target.value)} />
-      </Form.Item>
-    </Form>
-  );
+  // const ConfirmForm = (props) => (
+  //   <Form layout="vertical" style={{ marginTop: 24 }}>
+  //     <Form.Item
+  //       required
+  //       label="授权密码"
+  //       extra={`用户 ${props.username} 的密码， 该密码仅做首次验证使用，不会存储该密码。`}
+  //     >
+  //       <Input.Password onChange={(e) => props.onChange(e.target.value)} />
+  //     </Form.Item>
+  //   </Form>
+  // );
 
-  function handleUploadChange(v) {
-    if (v.fileList.length === 0) {
-      setFileList([]);
-    }
-  }
+  // function handleUploadChange(v) {
+  //   if (v.fileList.length === 0) {
+  //     setFileList([]);
+  //   }
+  // }
 
-  function handleUpload(file, fileList) {
-    setUploading(true);
-    const formData = new FormData();
-    formData.append("file", file);
-    http
-      .post("/api/host/parse/", formData)
-      .then((res) => {
-        file.data = res;
-        setFileList([file]);
-      })
-      .finally(() => setUploading(false));
-    return false;
-  }
+  // function handleUpload(file, fileList) {
+  //   setUploading(true);
+  //   const formData = new FormData();
+  //   formData.append("file", file);
+  //   http
+  //     .post("/api/host/parse/", formData)
+  //     .then((res) => {
+  //       file.data = res;
+  //       setFileList([file]);
+  //     })
+  //     .finally(() => setUploading(false));
+  //   return false;
+  // }
 
   const info = store.record;
   return (
@@ -116,8 +85,8 @@ export default observer(function () {
       visible
       width={700}
       maskClosable={false}
-      title={store.record.id ? "编辑主机" : "新建主机"}
-      okText="新增"
+      title={store.record.hostId ? "host edition" : "add host"}
+      okText="new"
       onCancel={() => (store.formVisible = false)}
       confirmLoading={loading}
       onOk={handleSubmit}
@@ -136,11 +105,11 @@ export default observer(function () {
             showCheckedStrategy={TreeSelect.SHOW_CHILD}
             placeholder="请选择分组"/>
         </Form.Item> */}
-        <Form.Item required name="hostName" label="主机名称">
-          <Input placeholder="请输入主机名称" />
+        <Form.Item required name="hostName" label="host name">
+          <Input placeholder="please input host name" />
         </Form.Item>
-        <Form.Item required name="mac" label="mac地址">
-          <Input placeholder="请输入mac地址" />
+        <Form.Item required name="mac" label="mac">
+          <Input placeholder="please input mac" />
         </Form.Item>
         {/* <Form.Item required label="连接地址" style={{marginBottom: 0}}>
           <Form.Item name="username" className={styles.formAddress1} style={{width: 'calc(30%)'}}>
@@ -159,8 +128,8 @@ export default observer(function () {
             {fileList.length === 0 ? <Button loading={uploading} icon={<UploadOutlined/>}>点击上传</Button> : null}
           </Upload>
         </Form.Item> */}
-        <Form.Item name="desc" label="备注信息">
-          <Input.TextArea placeholder="请输入主机备注信息" />
+        <Form.Item name="desc" label="notes">
+          <Input.TextArea placeholder="please input notes" />
         </Form.Item>
         {/* <Form.Item wrapperCol={{span: 17, offset: 5}}>
           <Alert showIcon type="info" message="首次验证时需要输入登录用户名对应的密码，该密码会用于配置SSH密钥认证，不会存储该密码。"/>

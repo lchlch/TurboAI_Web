@@ -1,99 +1,94 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react";
-import { Modal, Form, Input, Col, Row, Menu } from "antd";
-import hljs from "../../highlight";
-import Sync from "./Sync";
+import { Modal,Spin, Col, Row, Menu, Button } from "antd";
+// import Sync from "./Sync";
 import { http } from "libs";
 import store from "./store";
 import {
   AppstoreOutlined,
   MailOutlined,
-  SettingOutlined,
+  // SettingOutlined,
 } from "@ant-design/icons";
+import hljs from "../../highlight";
 import "highlight.js/styles/a11y-dark.css";
+// import { divide } from "lodash";
 
-export default observer(function () {
+export default observer(function () {      
   const [loading, setLoading] = useState(false);
-  const [password, setPassword] = useState();
-  const [range, setRange] = useState("2");
-  const [logCmd, setLogCmd] = useState();
-  const [token, setToken] = useState();
-  const preRef = useRef(null);
+  const [downloadloading, setDownloadLoading] = useState(false);
+  // const [password, setPassword] = useState();
+  // const [range, setRange] = useState("2");
+  // const [logCmd, setLogCmd] = useState();
+  // const [token, setToken] = useState();
   const [code, setCode] = useState();
+  const [logId, setLogId] = useState("15");
 
+  const preRef = React.useRef(null);
   useEffect(() => {
     if (preRef.current) {
       hljs.highlightBlock(preRef.current);
     }
-  }, [code]);
+  }, []);
 
-  const mockLog = {
-    1: 
-    `    Sat Mar 16 08:20:33 2024 [315] <err> (0x16d963000) analytics_send_passcode_status: AnalyticsEvent: is_set: 1, type: 0, activation_status: 0
-    Sat Mar 16 17:35:10 2024 [323] <err> (0x1db585000) MKBDeviceSupportsEnhancedAPFS: dt = -8, bootarg = 0
-    Sat Mar 16 17:35:10 2024 [323] <err> (0x16cf77000) data_analytics_init_block_invoke: Checking in for data analytics
-    Sat Mar 16 17:35:10 2024 [323] <err> (0x16cf77000) data_analytics_init_block_invoke: set activity criteria
-    Sat Mar 16 22:22:51 2024 [323] <err> (0x16cf77000) data_analytics_init_block_invoke: data analytics activity
-    Sat Mar 16 22:22:51 2024 [323] <err> (0x16cf77000) analytics_send_kek_stats: AnalyticsEvent: xart_policy: 1, xart_policy_enforced: 0, xart_policy_missing: 0
-    Sat Mar 16 22:22:51 2024 [323] <err> (0x16cf77000) analytics_send_kek_stats: AnalyticsEvent: xart_policy: 1, xart_policy_enforced: 0, xart_policy_missing: 0
-    Sat Mar 16 22:22:51 2024 [323] <err> (0x16cf77000) dump_fv_blob_state: failed to get blob_state: (e007c013)
-    
-    Sat Mar 16 22:22:51 2024 [323] <err> (0x16cf77000) analytics_send_passcode_status: AnalyticsEvent: is_set: 1, type: 0, activation_status: 0
-    Mon Mar 18 04:16:23 2024 [323] <err> (0x16d003000) data_analytics_init_block_invoke: data analytics activity
-    Mon Mar 18 04:16:23 2024 [323] <err> (0x16d003000) analytics_send_kek_stats: AnalyticsEvent: xart_policy: 1, xart_policy_enforced: 0, xart_policy_missing: 0
-    Mon Mar 18 04:16:23 2024 [323] <err> (0x16d003000) analytics_send_kek_stats: AnalyticsEvent: xart_policy: 1, xart_policy_enforced: 0, xart_policy_missing: 0
-    Mon Mar 18 04:16:23 2024 [323] <err> (0x16d003000) dump_fv_blob_state: failed to get blob_state: (e007c013)
-    
-    Mon Mar 18 04:16:23 2024 [323] <err> (0x16d003000) analytics_send_passcode_status: AnalyticsEvent: is_set: 1, type: 0, activation_status: 0
-    Tue Mar 19 04:36:08 2024 [51204] <err> (0x1db585000) MKBDeviceSupportsEnhancedAPFS: dt = -8, bootarg = 0
-    Tue Mar 19 04:36:08 2024 [51204] <err> (0x16d26f000) data_analytics_init_block_invoke: Checking in for data analytics
-    Tue Mar 19 04:36:08 2024 [51204] <err> (0x16d26f000) data_analytics_init_block_invoke: activity criteria already set
-    Tue Mar 19 04:36:08 2024 [51204] <err> (0x16d1e3000) data_analytics_init_block_invoke: data analytics activity
-    Tue Mar 19 04:36:08 2024 [51204] <err> (0x16d1e3000) analytics_send_kek_stats: AnalyticsEvent: xart_policy: 1, xart_policy_enforced: 0, xart_policy_missing: 0
-    Tue Mar 19 04:36:08 2024 [51204] <err> (0x16d1e3000) analytics_send_kek_stats: AnalyticsEvent: xart_policy: 1, xart_policy_enforced: 0, xart_policy_missing: 0
-    Tue Mar 19 04:36:08 2024 [51204] <err> (0x16d1e3000) dump_fv_blob_state: failed to get blob_state: (e007c013)
-    
-    Tue Mar 19 04:36:08 2024 [51204] <err> (0x16d1e3000) analytics_send_passcode_status: AnalyticsEvent: is_set: 1, type: 0, activation_status: 0
-    Wed Mar 20 04:29:53 2024 [72622] <err> (0x1db585000) MKBDeviceSupportsEnhancedAPFS: dt = -8, bootarg = 0
-    Wed Mar 20 04:29:53 2024 [72622] <err> (0x16be2b000) data_analytics_init_block_invoke: Checking in for data analytics
-    Wed Mar 20 04:29:53 2024 [72622] <err> (0x16be2b000) data_analytics_init_block_invoke: activity criteria already set
-    Wed Mar 20 04:29:53 2024 [72622] <err> (0x16bd9f000) data_analytics_init_block_invoke: data analytics activity
-    Wed Mar 20 04:29:53 2024 [72622] <err> (0x16bd9f000) analytics_send_kek_stats: AnalyticsEvent: xart_policy: 1, xart_policy_enforced: 0, xart_policy_missing: 0
-    Wed Mar 20 04:29:53 2024 [72622] <err> (0x16bd9f000) analytics_send_kek_stats: AnalyticsEvent: xart_policy: 1, xart_policy_enforced: 0, xart_policy_missing: 0
-    Wed Mar 20 04:29:53 2024 [72622] <err> (0x16bd9f000) dump_fv_blob_state: failed to get blob_state: (e007c013)
-    Tue Mar 19 04:36:08 2024 [51204] <err> (0x16d1e3000) analytics_send_passcode_status: AnalyticsEvent: is_set: 1, type: 0, activation_status: 0
-    Wed Mar 20 04:29:53 2024 [72622] <err> (0x1db585000) MKBDeviceSupportsEnhancedAPFS: dt = -8, bootarg = 0
-    Wed Mar 20 04:29:53 2024 [72622] <err> (0x16be2b000) data_analytics_init_block_invoke: Checking in for data analytics
-    Wed Mar 20 04:29:53 2024 [72622] <err> (0x16be2b000) data_analytics_init_block_invoke: activity criteria already set
-    Wed Mar 20 04:29:53 2024 [72622] <err> (0x16bd9f000) data_analytics_init_block_invoke: data analytics activity
-    Wed Mar 20 04:29:53 2024 [72622] <err> (0x16bd9f000) analytics_send_kek_stats: AnalyticsEvent: xart_policy: 1, xart_policy_enforced: 0, xart_policy_missing: 0
-    Wed Mar 20 04:29:53 2024 [72622] <err> (0x16bd9f000) analytics_send_kek_stats: AnalyticsEvent: xart_policy: 1, xart_policy_enforced: 0, xart_policy_missing: 0
-    Wed Mar 20 04:29:53 2024 [72622] <err> (0x16bd9f000) dump_fv_blob_state: failed to get blob_state: (e007c013)
-    Tue Mar 19 04:36:08 2024 [51204] <err> (0x16d1e3000) analytics_send_passcode_status: AnalyticsEvent: is_set: 1, type: 0, activation_status: 0
-    Wed Mar 20 04:29:53 2024 [72622] <err> (0x1db585000) MKBDeviceSupportsEnhancedAPFS: dt = -8, bootarg = 0
-    Wed Mar 20 04:29:53 2024 [72622] <err> (0x16be2b000) data_analytics_init_block_invoke: Checking in for data analytics
-    Wed Mar 20 04:29:53 2024 [72622] <err> (0x16be2b000) data_analytics_init_block_invoke: activity criteria already set
-    Wed Mar 20 04:29:53 2024 [72622] <err> (0x16bd9f000) data_analytics_init_block_invoke: data analytics activity
-    Wed Mar 20 04:29:53 2024 [72622] <err> (0x16bd9f000) analytics_send_kek_stats: AnalyticsEvent: xart_policy: 1, xart_policy_enforced: 0, xart_policy_missing: 0
-    Wed Mar 20 04:29:53 2024 [72622] <err> (0x16bd9f000) analytics_send_kek_stats: AnalyticsEvent: xart_policy: 1, xart_policy_enforced: 0, xart_policy_missing: 0
-    Wed Mar 20 04:29:53 2024 [72622] <err> (0x16bd9f000) dump_fv_blob_state: failed to get blob_state: (e007c013)
-    `,
-  };
-
-  // 
-  function handleSubmit() {
+  useEffect(() => {
     setLoading(true);
     http
-      .post("/api/host/valid/", { password, range })
+      .get("/api/v1/server/bash/logs", {
+        params: { dictCode: logId, ids: store.curOperationHostInfo.hostId },
+      })
       .then((res) => {
         // setHosts(res.hosts);
-        setToken(res.token);
+        if (res && res.length > 0) {
+          setCode(res[0].logs.join("\n"));
+        } else {
+          setCode("");
+        }
       })
       .finally(() => setLoading(false));
-  }
+  }, [logId]);
+
+  // useEffect(() => {
+
+  // }, [logId]);
+
+  //
+  // function handleSubmit() {
+  //   setLoading(true);
+  //   http
+  //     .post("/api/host/valid/", { password, range })
+  //     .then((res) => {
+  //       // setHosts(res.hosts);
+  //       setToken(res.token);
+  //     })
+  //     .finally(() => setLoading(false));
+  // }
 
   function handleClose() {
     store.logVisible = false;
+  }
+
+  function downloadLog() {
+    setDownloadLoading(true);
+    http
+      .get(
+        "api/v1/server/bash/logs/download",
+        {
+          params: { dictCode: logId, ids: store.curOperationHostInfo.hostId },
+        },
+        { responseType: "blob" }
+      )
+      .then((res) => {
+        const blob = new Blob([res], {
+          type: "text/plain",
+        });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "log.txt";
+        document.body.appendChild(link);
+        link.click();
+      })
+      .finally(() => setDownloadLoading(false));
   }
 
   function getItem(label, key, icon, children, type) {
@@ -106,22 +101,22 @@ export default observer(function () {
     };
   }
   const items = [
-    getItem("核心日志", "sub1", <MailOutlined />, [
-      getItem("内核引导信息日志", "1"),
-      getItem("标准系统错误信息日志", "2"),
-      getItem("计划任务日志", "3"),
-      getItem("安全信息日志", "4"),
+    getItem("core logs", "sub1", <MailOutlined />, [
+      getItem("log/dmesg", "14"),
+      getItem("log/messages", "15"),
+      getItem("log/cron", "16"),
+      getItem("log/secure", "17"),
     ]),
-    getItem("自定义日志", "sub2", <AppstoreOutlined />, [
-      getItem("nginx日志", "5"),
-      getItem("server日志", "6"),
-      getItem("saltsack日志", "7"),
+    getItem("private task logs", "sub2", <AppstoreOutlined />, [
+      getItem("nginx logs", "5"),
+      getItem("server logs", "6"),
+      getItem("saltsack logs", "7"),
     ]),
   ];
   const App = () => {
     const onClick = (e) => {
-      setLogCmd(e.key);
-      setCode(mockLog[1]);
+      setLogId(e.key);
+      // setCode(mockLog[1]);
     };
     return (
       <Row>
@@ -131,26 +126,46 @@ export default observer(function () {
             style={{
               width: 256,
             }}
-            defaultSelectedKeys={["1"]}
+            defaultSelectedKeys={["15"]}
             defaultOpenKeys={["sub1"]}
             mode="inline"
             items={items}
+            selectedKeys={logId}
           />
         </Col>
         <Col span={18}>
           {
-            <pre>
-              <code id={"javascript"} ref={preRef} style={{height: "50vh"}}>
-                {code}
-              </code>
-            </pre>
+            <div
+              style={{ height: "50vh", overflow: "auto", position: "relative" }}
+            >
+              <Button
+                type="primary"
+                size="small"
+                onClick={() => downloadLog()}
+                style={{ position: "absolute", right: "0px", top: "0px" }}
+                loading={downloadloading}
+              >
+                download
+              </Button>
+              {loading && (
+                <Spin
+                  style={{ position: "absolute", right: "45%", top: "40%" }}
+                />
+              )}
+
+              <pre>
+                <code id={"javascript"} ref={preRef}>
+                  {code}
+                </code>
+              </pre>
+            </div>
           }
         </Col>
       </Row>
     );
   };
 
-  const unVerifiedLength = store.records.filter((x) => !x.is_verified).length;
+  // const unVerifiedLength = store.records.filter((x) => !x.is_verified).length;
   return (
     <Modal
       visible
@@ -159,7 +174,6 @@ export default observer(function () {
       okText="关闭"
       onCancel={handleClose}
       width={"70%"}
-      
       footer={null}
     >
       <App></App>

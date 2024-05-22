@@ -26,7 +26,7 @@ class Store {
     let records = [];
     if (this.group.key) {
       const host_ids = this.counter[this.group.key]
-      records = this.records.filter(x => host_ids && host_ids.has(x.id));
+      records = this.records.filter(x => host_ids && host_ids.has(x.hostId));
     }
     return records
   }
@@ -34,11 +34,11 @@ class Store {
   @computed get counter() {
     const counter = {}
     for (let host of this.records) {
-      for (let id of host.group_ids) {
-        if (counter[id]) {
-          counter[id].add(host.id)
+      for (let hostId of host.group_ids) {
+        if (counter[hostId]) {
+          counter[hostId].add(host.hostId)
         } else {
-          counter[id] = new Set([host.id])
+          counter[hostId] = new Set([host.hostId])
         }
       }
     }

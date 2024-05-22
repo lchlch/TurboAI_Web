@@ -1,12 +1,12 @@
 import { observable, computed } from "mobx";
 import { http, includes } from "libs";
-import moment from "moment";
+// import moment from "moment";
 import lds from "lodash";
 
 class Store {
   autoReload = null;
   @observable records = [];
-  @observable record = {};
+  @observable record = { imageRelease: 0 };
   @observable types = [];
   @observable groups = [];
   @observable overviews = [];
@@ -15,13 +15,13 @@ class Store {
   @observable formVisible = false;
   @observable ovFetching = false;
   @observable isEdit = false;
-  @observable currentId = '';
-
+  @observable currentId = "";
 
   @observable f_name;
   @observable f_type;
   @observable f_active = "";
   @observable f_group;
+  @observable imageReleaseDic = [];
 
   @computed get dataSource() {
     let records = this.records;
@@ -44,29 +44,20 @@ class Store {
     return records;
   }
 
+  resetValue = () => {
+    this.record = { imageRelease: 0 };
+    this.isEdit = false;
+  };
+
   fetchRecords = () => {
     this.isFetching = true;
     http
-      .get("/api/v1/dao/imageList/list")
+      .get("/api/v1/server/image/list")
       .then((res) => {
-        // const newJsonStr = 
-        // res.forEach(item => {
-        //   JsonBigint.parse(item).then(res => console.log(res))
-        // })
-        // console.log(newJsonStr); //打印的内容如下图?
-        //最后使用toString()方法便能的到原来正确的数据了
-        // console.log(newJsonStr.id.toString()); //这个就是和原来相同的数据了
-        // console.log(res);
-        // const tmp = new Set();
-        // detections.map(item => {
-        //   tmp.add(item['type_alias']);
-        //   const value = item['latest_run_time'];
-        //   item['latest_run_time_alias'] = value ? moment(value).fromNow() : null;
-        //   return null
-        // });
-        // this.types = Array.from(tmp);
         res.forEach((item) => {
           item.id = item.id.toString();
+          item.imageReleaseLabel =
+            this.imageReleaseDic.getValueLabel[item.imageRelease];
         });
         this.records = res;
         // this.groups = groups;
@@ -89,9 +80,9 @@ class Store {
   toNext() {
     this.ovFetching = true;
     let addOrEditUrl = this.isEdit ? http.put : http.post;
-    return addOrEditUrl("/api/v1/dao/imageList", { ...this.record })
+    return addOrEditUrl("/api/v1/server/imageList", { ...this.record })
       .then((res) => {
-        if(res) {
+        if (res) {
           this.currentId = res.id;
         }
         this.page += 1;
@@ -112,7 +103,8 @@ class Store {
     if (info) {
       this.record = lds.cloneDeep(info);
       this.isEdit = true;
-      this.currentId = info.id
+      this.currentId = info.id;
+      this.currentInfo = info;
     } else {
       this.isEdit = false;
     }

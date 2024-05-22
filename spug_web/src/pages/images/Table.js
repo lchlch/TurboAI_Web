@@ -1,15 +1,32 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { Table, Modal, Radio, Tag, message } from "antd";
+import { Table, Modal, Tag, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Action, AuthButton, TableCard } from "components";
-import { http, hasPermission } from "libs";
+import { http } from "libs";
 import store from "./store";
 
 @observer
 class ComTable extends React.Component {
   componentDidMount() {
-    store.fetchRecords();
+    http
+      .get(
+        "/api/v1/system/dictData/list",
+        { params: { dictType: "server_image_type" } },
+        { timeout: 120000 }
+      )
+      .then((res) => {
+        let dicArray = res.map((item) => ({
+          label: item.dictLabel,
+          value: item.dictValue,
+        }));
+        let getValueLabel = {};
+        dicArray.forEach((item) => {
+          getValueLabel[item.value] = item.label;
+        });
+        store.imageReleaseDic = { dicArray, getValueLabel };
+        store.fetchRecords();
+      });
   }
 
   // handleActive = (text) => {
@@ -34,15 +51,13 @@ class ComTable extends React.Component {
 
   handleDelete = (text) => {
     Modal.confirm({
-      title: "删除确认",
-      content: `确定要删除?`,
+      title: "delete confirm",
+      content: `ready to delete?`,
       onOk: () => {
-        return http
-          .delete(`/api/v1/dao/imageList/${text.id}`)
-          .then(() => {
-            message.success("删除成功");
-            store.fetchRecords();
-          });
+        return http.delete(`/api/v1/server/imageList/${text.id}`).then(() => {
+          message.success("delete success");
+          store.fetchRecords();
+        });
       },
     });
   };
@@ -52,18 +67,19 @@ class ComTable extends React.Component {
       <TableCard
         tKey="mi"
         rowKey="id"
-        title="镜像管理"
+        title="image management"
         loading={store.isFetching}
         dataSource={store.dataSource}
         onReload={store.fetchRecords}
+        scroll={{ x: 1800 }}
         actions={[
           <AuthButton
-            auth="monitor.monitor.add"
+            auth="add"
             type="primary"
             icon={<PlusOutlined />}
             onClick={() => store.showForm()}
           >
-            新建镜像
+            new
           </AuthButton>,
           // <Radio.Group value={store.f_active} onChange={e => store.f_active = e.target.value}>
           //   <Radio.Button value="">全部</Radio.Button>
@@ -79,64 +95,68 @@ class ComTable extends React.Component {
         }}
       >
         <Table.Column title="id" dataIndex="id" />
-        <Table.Column title="镜像名称" dataIndex="imageName" />
-        <Table.Column title="镜像版本" dataIndex="imageRelease" />
-        <Table.Column title="版本号" dataIndex="imageVersion" />
-        <Table.Column title="内核版本" dataIndex="coreVersion" />
+        <Table.Column title="image name" width={180} dataIndex="imageName" />
+        <Table.Column
+          title="image release label"
+          width={180}
+          dataIndex="imageReleaseLabel"
+        />
+        <Table.Column
+          title="image version"
+          dataIndex="imageVersion"
+          width={200}
+        />
+        <Table.Column title="os core version" dataIndex="coreVersion" />
         <Table.Column title="s3Path" width={100} dataIndex="s3Path" />
         <Table.Column
-          title="状态"
+          title="image type"
           render={(info) => {
             if (info.imageType === 0) {
-              return <Tag color="blue">公共镜像</Tag>;
+              return <Tag color="blue">public image</Tag>;
             } else {
-              return <Tag color="red">自定义镜像</Tag>;
+              return <Tag color="red">private image</Tag>;
             }
           }}
         />
-        <Table.Column hide title="更新人" dataIndex="updateBy" />
+        <Table.Column hide title="update by" dataIndex="updateBy" width={100} />
         <Table.Column
           hide
-          title="更新时间"
+          title="update time"
           dataIndex="updateTime"
           sorter={(a, b) => a.latest_run_time.localeCompare(b.latest_run_time)}
         />
-        <Table.Column title="创建人" dataIndex="createBy" />
+        <Table.Column title="creator" dataIndex="createBy" width={100} />
         <Table.Column
-          title="创建时间"
+          width={130}
+          title="createTime"
           dataIndex="createTime"
           sorter={(a, b) => a.latest_run_time.localeCompare(b.latest_run_time)}
         />
 
-        {hasPermission("monitor.monitor.edit|monitor.monitor.del") && (
-          <Table.Column
-            width={180}
-            title="操作"
-            render={(info) => (
-              <Action>
-                {/* <Action.Button
+        <Table.Column
+          width={180}
+          title="operation"
+          render={(info) => (
+            <Action>
+              {/* <Action.Button
                   auth="monitor.monitor.edit"
                   onClick={() => this.handleActive(info)}
                 >
                   {info["is_active"] ? "禁用" : "启用"}
                 </Action.Button> */}
-                <Action.Button
-                  auth="monitor.monitor.edit"
-                  onClick={() => store.showForm(info)}
-                >
-                  编辑
-                </Action.Button>
-                <Action.Button
-                  danger
-                  auth="monitor.monitor.del"
-                  onClick={() => this.handleDelete(info)}
-                >
-                  删除
-                </Action.Button>
-              </Action>
-            )}
-          />
-        )}
+              <Action.Button auth="edit" onClick={() => store.showForm(info)}>
+                edit
+              </Action.Button>
+              <Action.Button
+                danger
+                auth="remove"
+                onClick={() => this.handleDelete(info)}
+              >
+                delete
+              </Action.Button>
+            </Action>
+          )}
+        />
       </TableCard>
     );
   }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, message, Modal } from "antd";
+import { Form, Input, Button, message } from "antd";
 import { useTranslation } from "react-i18next";
 // import "./i18next";
 import {
@@ -27,6 +27,7 @@ export default function () {
   const [loginType, setLoginType] = useState(
     localStorage.getItem("login_type") || "default"
   );
+  // setLoginType( localStorage.getItem("login_type") || "default")
   const [codeVisible, setCodeVisible] = useState(false);
   const [codeLoading, setCodeLoading] = useState(false);
 
@@ -50,6 +51,10 @@ export default function () {
   }, [counter]);
 
   function handleSubmit() {
+    // mock
+    setCodeVisible(false);
+    setLoginType(localStorage.getItem("login_type") || "default");
+    
     const formData = form.getFieldsValue();
     if (codeVisible && !formData.captcha) return message.error("请输入验证码");
     setLoading(true);
@@ -61,14 +66,15 @@ export default function () {
         id: 1,
         access_token: "db0ff8a496b74a9ba3ecea5c3cbbfcfc",
         nickname: "\u7ba1\u7406\u5458",
+        username: "admin",
         is_supper: true,
         has_real_ip: true,
         permissions: [],
       });
-      setLoading(false)
+      setLoading(false);
     } else {
-      setLoading(false)
-      message.error("login failed, please check the username and password !")
+      setLoading(false);
+      message.error("login failed, please check the username and password !");
     }
     // http.post('/api/account/login/', formData)
     //   .then(data => {
@@ -98,6 +104,7 @@ export default function () {
     localStorage.setItem("id", data["id"]);
     localStorage.setItem("token", data["access_token"]);
     localStorage.setItem("nickname", data["nickname"]);
+    localStorage.setItem("username", data["username"]);
     localStorage.setItem("is_supper", data["is_supper"]);
     localStorage.setItem("permissions", JSON.stringify(data["permissions"]));
     localStorage.setItem("login_type", loginType);

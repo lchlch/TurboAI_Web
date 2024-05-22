@@ -1,8 +1,10 @@
 
 import React, { Suspense } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import moduleRoutes from '../routes';
+// import moduleRoutes from '../routes';
 import styles from './libs.module.css';
+import gStore from 'gStore';
+import { transformTreeToRoutes } from '../routes';
 
 
 // 创建单个路由
@@ -35,10 +37,23 @@ export class Router extends React.Component {
   constructor(props) {
     super(props);
     this.routes = [];
+    this.moduleRoutes = []
     this.initialRoutes();
   }
 
-  initialRoutes() {
+  componentWillMount() {
+    if (gStore.menuList.length === 0) {
+      let routes = [];
+      gStore._getMenuList().then(() => {
+        routes = transformTreeToRoutes(gStore.menuList);
+        this.initialRoutes(routes)
+      });
+    } else {
+      this.initialRoutes(transformTreeToRoutes(gStore.menuList));
+    }
+  }
+
+  initialRoutes(moduleRoutes) {
     for (let moduleRoute of moduleRoutes) {
       for (let route of moduleRoute['routes']) {
         route['path'] = moduleRoute['prefix'] + route['subPath'];

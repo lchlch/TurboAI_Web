@@ -63,7 +63,7 @@ export default observer(function () {
     if (store.group.title) {
       setLoading(true);
       const {key, parent_id, title} = store.group;
-      http.post('/api/host/group/', {id: key || undefined, parent_id, name: title})
+      http.post('/api/host/group/', {hostId: key || undefined, parent_id, name: title})
         .then(() => setAction(''))
         .finally(() => setLoading(false))
     } else {
@@ -75,7 +75,7 @@ export default observer(function () {
   function handleRemoveHosts() {
     const group = store.group;
     Modal.confirm({
-      title: '操作确认',
+      title: 'operation confirm',
       content: `批量删除【${group.title}】分组内的 ${store.counter[group.key].size} 个主机？`,
       onOk: () => http.delete('/api/host/', {params: {group_id: group.key}})
         .then(store.fetchRecords)
@@ -85,7 +85,7 @@ export default observer(function () {
   function handleRemove() {
     setAction('del');
     setLoading(true);
-    http.delete('/api/host/group/', {params: {id: store.group.key}})
+    http.delete('/api/host/group/', {params: {hostId: store.group.key}})
       .finally(() => {
         setAction('');
         setLoading(false)

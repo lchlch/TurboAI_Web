@@ -1,25 +1,38 @@
-
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Layout, Dropdown, Menu, Avatar } from 'antd';
-import { MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined, LogoutOutlined, CodeOutlined } from '@ant-design/icons';
-import { AuthDiv } from 'components';
-import Notification from './Notification';
-import styles from './layout.module.less';
-import http from '../libs/http';
-import history from '../libs/history';
-import avatar from './onlylogo.svg';
+import React from "react";
+// import { Link } from "react-router-dom";
+import { Layout, Dropdown, Menu, Avatar } from "antd";
+import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  // UserOutlined,
+  LogoutOutlined,
+  // CodeOutlined,
+} from "@ant-design/icons";
+// import { AuthDiv } from "components";
+// import Notification from "./Notification";
+import styles from "./layout.module.less";
+// import http from "../libs/http";
+// import history from "../libs/history";
+import avatar from "./onlylogo.svg";
 
 export default function (props) {
-
   function handleLogout() {
-    history.push('/');
-    http.get('/api/account/logout/')
+    localStorage.removeItem("username");
+    localStorage.removeItem("token");
+    localStorage.removeItem("id");
+    localStorage.removeItem("nickname");
+    localStorage.removeItem("is_supper");
+    localStorage.removeItem("permissions");
+    localStorage.removeItem("login_type");
+    localStorage.removeItem("userinfos");
+    localStorage.removeItem("TableFields");
+    localStorage.removeItem("roleId");
+    window.location.href = `${window.location.origin}`;
   }
 
-  function openTerminal() {
-    window.open('/ssh')
-  }
+  // function openTerminal() {
+  //   window.open("/ssh");
+  // }
 
   const UserMenu = (
     <Menu>
@@ -30,7 +43,8 @@ export default function (props) {
       </Menu.Item>
       <Menu.Divider/> */}
       <Menu.Item onClick={handleLogout}>
-        <LogoutOutlined style={{marginRight: 10}}/>退出登录
+        <LogoutOutlined style={{ marginRight: 10 }} />
+        退出登录
       </Menu.Item>
     </Menu>
   );
@@ -39,21 +53,21 @@ export default function (props) {
     <Layout.Header className={styles.header}>
       <div className={styles.left}>
         <div className={styles.trigger} onClick={props.toggle}>
-          {props.collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
+          {props.collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
         </div>
       </div>
-      <Notification/>
+      {/* <Notification/>
       <AuthDiv className={styles.terminal} auth="host.console.view|host.console.list" onClick={openTerminal}>
         <CodeOutlined style={{fontSize: 16}}/>
-      </AuthDiv>
+      </AuthDiv> */}
       <div className={styles.user}>
-        <Dropdown overlay={UserMenu} style={{background: '#000'}}>
+        <Dropdown overlay={UserMenu} style={{ background: "#000" }}>
           <span className={styles.action}>
-            <Avatar size="small" src={avatar} style={{marginRight: 8}}/>
-            {localStorage.getItem('nickname')}
+            <Avatar size="small" src={avatar} style={{ marginRight: 8 }} />
+            {localStorage.getItem("nickname")}
           </span>
         </Dropdown>
       </div>
     </Layout.Header>
-  )
+  );
 }

@@ -35,6 +35,10 @@ export default function () {
   const [notifies, setNotifies] = useState([]);
   const [reads, setReads] = useState([]);
 
+  // mock()
+  setLoading(false)
+  setNotifies([])
+
   useEffect(() => {
     fetch();
     listen();

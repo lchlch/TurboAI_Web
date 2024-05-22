@@ -1,142 +1,140 @@
 import React from "react";
 import { observer } from "mobx-react";
-import {
-  Table,
-  Modal,
-  Dropdown,
-  Button,
-  Menu,
-  Avatar,
-  Tooltip,
-  Space,
-  Tag,
-  Radio,
-  Input,
-  message,
-} from "antd";
-import {
-  PlusOutlined,
-  DownOutlined,
-  SyncOutlined,
-  FormOutlined,
-} from "@ant-design/icons";
-import { Action, TableCard, AuthButton, AuthFragment } from "components";
-import IPAddress from "./IPAddress";
-import { http, hasPermission } from "libs";
+import { Table, Tag } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Action, TableCard } from "components";
+// import IPAddress from "./IPAddress";
+// import { hasPermission } from "libs";
 import store from "./store";
-import icons from "./icons";
-import moment from "moment";
+// import icons from "./icons";
+// import moment from "moment";
 import OperationMenu from "./operationMenu";
 
 function ComTable() {
-  function handleDelete(text) {
-    Modal.confirm({
-      title: "删除确认",
-      content: `确定要删除主机【${text["hostName"]}】?`,
-      onOk: () => {
-        return http.delete(`/api/v1/dao/hostList/${text.id}`).then(() => {
-          message.success("删除成功");
-          store.fetchRecords();
-        });
+  function getHostStatus(hostStatus) {
+    let dict = {
+      0: {
+        desc: "agent monitoring",
+        type: "success",
       },
-    });
+      1: {
+        desc: "running",
+        type: "processing",
+      },
+      2: {
+        desc: "installing",
+        type: "warning",
+        icon: <LoadingOutlined />,
+      },
+      3: {
+        desc: "outline",
+        type: "error",
+      },
+      4: {
+        desc: "reboting",
+        type: "warning",
+        icon: <LoadingOutlined />,
+      },
+    };
+    return dict[hostStatus] || {};
   }
 
-  function handleImport(menu) {
-    if (menu.key === "excel") {
-      store.importVisible = true;
-    } else if (menu.key === "form") {
-      store.showForm();
-    } else {
-      store.cloudImport = menu.key;
-    }
-  }
+  // function handleImport(menu) {
+  //   if (menu.key === "excel") {
+  //     store.importVisible = true;
+  //   } else if (menu.key === "form") {
+  //     store.showForm();
+  //   } else {
+  //     store.cloudImport = menu.key;
+  //   }
+  // }
 
-  function ExpTime(props) {
-    if (!props.value) return null;
-    let value = moment(props.value);
-    const days = value.diff(moment(), "days");
-    if (days > 30) {
-      return (
-        <span>
-          剩余 <b style={{ color: "#389e0d" }}>{days}</b> 天
-        </span>
-      );
-    } else if (days > 7) {
-      return (
-        <span>
-          剩余 <b style={{ color: "#faad14" }}>{days}</b> 天
-        </span>
-      );
-    } else if (days >= 0) {
-      return (
-        <span>
-          剩余 <b style={{ color: "#d9363e" }}>{days}</b> 天
-        </span>
-      );
-    } else {
-      return (
-        <span>
-          过期 <b style={{ color: "#d9363e" }}>{Math.abs(days)}</b> 天
-        </span>
-      );
-    }
-  }
+  // function ExpTime(props) {
+  //   if (!props.value) return null;
+  //   let value = moment(props.value);
+  //   const days = value.diff(moment(), "days");
+  //   if (days > 30) {
+  //     return (
+  //       <span>
+  //         剩余 <b style={{ color: "#389e0d" }}>{days}</b> 天
+  //       </span>
+  //     );
+  //   } else if (days > 7) {
+  //     return (
+  //       <span>
+  //         剩余 <b style={{ color: "#faad14" }}>{days}</b> 天
+  //       </span>
+  //     );
+  //   } else if (days >= 0) {
+  //     return (
+  //       <span>
+  //         剩余 <b style={{ color: "#d9363e" }}>{days}</b> 天
+  //       </span>
+  //     );
+  //   } else {
+  //     return (
+  //       <span>
+  //         过期 <b style={{ color: "#d9363e" }}>{Math.abs(days)}</b> 天
+  //       </span>
+  //     );
+  //   }
+  // }
 
   return (
     <TableCard
       tKey="hi"
-      rowKey="id"
-
-      title={
-        <Input
-          allowClear
-          value={store.f_word}
-          placeholder="输入名称/IP检索"
-          style={{ maxWidth: 250 }}
-          onChange={(e) => (store.f_word = e.target.value)}
-        />
-      }
+      rowKey="hostId"
+      // title={
+      //   // <Input
+      //   //   allowClear
+      //   //   value={store.f_word}
+      //   //   placeholder="输入名称/IP检索"
+      //   //   style={{ maxWidth: 250 }}
+      //   //   onChange={(e) => (store.f_word = e.target.value)}
+      //   // />
+      // }
       loading={store.isFetching}
       dataSource={store.dataSource}
       onReload={store.fetchRecords}
-      actions={[
-        <AuthFragment auth="host.host.add">
-          <Dropdown
-            overlay={
-              <Menu onClick={handleImport}>
-                <Menu.Item key="form">
-                  <Space>
-                    <FormOutlined
-                      style={{ fontSize: 16, marginRight: 4, color: "#1890ff" }}
-                    />
-                    <span>新建主机</span>
-                  </Space>
-                </Menu.Item>
-                <Menu.Item key="excel">
-                  <Space>
-                    <Avatar shape="square" size={20} src={icons.excel} />
-                    <span>Excel</span>
-                  </Space>
-                </Menu.Item>
-              </Menu>
-            }
-          >
-            <Button type="primary" icon={<PlusOutlined />}>
-              新建 <DownOutlined />
-            </Button>
-          </Dropdown>
-        </AuthFragment>,
-        // <AuthButton
-        //   auth="host.host.add"
-        //   type="primary"
-        //   icon={<SyncOutlined/>}
-        //   onClick={() => store.showSync()}>验证</AuthButton>,
-        // <Radio.Group value={store.f_status} onChange={e => store.f_status = e.target.value}>
-        //   <Radio.Button value="">全部</Radio.Button>
-        //   <Radio.Button value={false}>未验证</Radio.Button>
-        // </Radio.Group>
-      ]}
+      actions={
+        [
+          // <AuthFragment auth="host.host.add">
+          //   <Dropdown
+          //     overlay={
+          //       <Menu onClick={handleImport}>
+          //         <Menu.Item key="form">
+          //           <Space>
+          //             <FormOutlined
+          //               style={{ fontSize: 16, marginRight: 4, color: "#1890ff" }}
+          //             />
+          //             <span>新建主机</span>
+          //           </Space>
+          //         </Menu.Item>
+          //         <Menu.Item key="excel">
+          //           <Space>
+          //             <Avatar shape="square" size={20} src={icons.excel} />
+          //             <span>Excel</span>
+          //           </Space>
+          //         </Menu.Item>
+          //       </Menu>
+          //     }
+          //   >
+          //     <Button type="primary" icon={<PlusOutlined />}>
+          //       新建 <DownOutlined />
+          //     </Button>
+          //   </Dropdown>
+          // </AuthFragment>,
+          // <AuthButton
+          //   auth="host.host.add"
+          //   type="primary"
+          //   icon={<SyncOutlined/>}
+          //   onClick={() => store.showSync()}>验证</AuthButton>,
+          // <Radio.Group value={store.f_status} onChange={e => store.f_status = e.target.value}>
+          //   <Radio.Button value="">全部</Radio.Button>
+          //   <Radio.Button value={false}>未验证</Radio.Button>
+          // </Radio.Group>
+        ]
+      }
       pagination={{
         showSizeChanger: true,
         showLessItems: true,
@@ -145,10 +143,14 @@ function ComTable() {
         pageSizeOptions: ["10", "20", "50", "100"],
       }}
     >
-      <Table.Column title="id" hide render={(info) => <div>{info.id}</div>} />
+      <Table.Column
+        title="hostId"
+        hide
+        render={(info) => <div>{info.hostId}</div>}
+      />
       <Table.Column
         showSorterTooltip={false}
-        title="主机名称"
+        title="Host Name"
         render={(info) => (
           <Action.Button onClick={() => store.showDetail(info)}>
             {info.hostName}
@@ -156,9 +158,21 @@ function ComTable() {
         )}
         sorter={(a, b) => a.hostName.localeCompare(b.hostName)}
       />
-      <Table.Column title="mac地址" render={(info) => <div>{info.mac}</div>} />
-      <Table.Column title="主机状态" render={(info) => <div>{info.hostStatus}</div>} />
-      <Table.Column title="备注" render={(info) => <div>{info.remark}</div>} />
+
+      <Table.Column title="mac" render={(info) => <div>{info.mac}</div>} />
+      <Table.Column title="IP" render={(info) => <div>{info.ip}</div>} />
+      <Table.Column
+        title="Host Status"
+        render={(info) => (
+          <div>
+            <Tag color={getHostStatus(info.hostStatus).type}>
+              {getHostStatus(info.hostStatus).icon}
+              {getHostStatus(info.hostStatus).desc}
+            </Tag>
+          </div>
+        )}
+      />
+      <Table.Column title="Notes" render={(info) => <div>{info.remark}</div>} />
       {/* <Table.Column
         title="IP地址"
         render={(info) => (
@@ -195,14 +209,13 @@ function ComTable() {
           v ? <Tag color="green">已验证</Tag> : <Tag color="orange">未验证</Tag>
         }
       /> */}
-      {hasPermission("host.host.edit|host.host.del|host.host.console") && (
-        <Table.Column
-          width={260}
-          title="操作"
-          render={(info) => (
-            <div>
-              <Action>
-                <Action.Button
+      <Table.Column
+        width={160}
+        title="Operations"
+        render={(info) => (
+          <div>
+            <Action>
+              {/* <Action.Button
                   auth="host.host.edit"
                   onClick={() => store.showForm(info)}
                 >
@@ -214,13 +227,12 @@ function ComTable() {
                   onClick={() => handleDelete(info)}
                 >
                   删除
-                </Action.Button>
-                <OperationMenu></OperationMenu>
-              </Action>
-            </div>
-          )}
-        />
-      )}
+                </Action.Button> */}
+              <OperationMenu info={info}></OperationMenu>
+            </Action>
+          </div>
+        )}
+      />
     </TableCard>
   );
 }

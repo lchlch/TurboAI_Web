@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
-import { CloseOutlined, SmileOutlined } from "@ant-design/icons";
-import { Dropdown, Menu, Space } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
+// import { Dropdown, Menu, Space } from "antd";
 import styles from "./index.module.less";
 import store from "./store";
 
 export default observer(function () {
   const [isMouseInside, setIsMouseInside] = useState(false);
+  const [destIp, setDestIp] = useState("");
+
+  useEffect(() => {
+    setDestIp(store.curOperationHostInfo.ip);
+  }, []);
 
   const handleMouseEnter = () => {
     setIsMouseInside(true);
@@ -31,14 +36,14 @@ export default observer(function () {
           className={styles.closeIcon}
           onClick={goBackTable}
           style={{
-            fontSize: "24px", // 设置图标大小
+            fontSize: "30px", // 设置图标大小
             color: "#2563fc", // 设置图标颜色
           }}
         />
       )}
       <iframe
         className={styles.iframe}
-        src="http://111.229.95.48/ssh/host/8.130.51.9"
+        src={`http://192.168.10.10/ssh/host/${destIp}`}
         title="file"
         frameBorder={0}
       ></iframe>

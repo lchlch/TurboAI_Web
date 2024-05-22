@@ -1,9 +1,11 @@
 {
-  "name": "TurboAI_web",
+  "name": "turboai-web",
   "version": "3.0.0",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.3.0",
+    "@rpldy/upload-button": "^1.8.0",
+    "@rpldy/uploady": "^1.8.0",
     "ace-builds": "^1.4.13",
     "antd": "4.21.5",
     "axios": "^0.21.0",
@@ -21,6 +23,7 @@
     "react-i18next": "^14.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
+    "typed.js": "^2.1.0",
     "uuid": "^9.0.1",
     "xterm": "^4.6.0",
     "xterm-addon-fit": "^0.5.0"

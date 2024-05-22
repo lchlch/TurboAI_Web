@@ -2,13 +2,13 @@
 import React from 'react';
 import { Menu } from 'antd';
 import { AuthDiv, Breadcrumb } from 'components';
-import AlarmSetting from './AlarmSetting';
-import LDAPSetting from './LDAPSetting';
-import OpenService from './OpenService';
-import KeySetting from './KeySetting';
-import SecuritySetting from './SecuritySetting';
-import PushSetting from './PushSetting';
-import About from './About';
+// import AlarmSetting from './AlarmSetting';
+// import LDAPSetting from './LDAPSetting';
+// import OpenService from './OpenService';
+// import KeySetting from './KeySetting';
+// import SecuritySetting from './SecuritySetting';
+// import PushSetting from './PushSetting';
+// import About from './About';
 import styles from './index.module.css';
 import store from './store';
 
@@ -51,13 +51,13 @@ class Index extends React.Component {
             </Menu>
           </div>
           <div className={styles.right}>
-            {selectedKeys[0] === 'security' && <SecuritySetting/>}
+            {/* {selectedKeys[0] === 'security' && <SecuritySetting/>}
             {selectedKeys[0] === 'ldap' && <LDAPSetting/>}
             {selectedKeys[0] === 'alarm' && <AlarmSetting/>}
             {selectedKeys[0] === 'push' && <PushSetting/>}
             {selectedKeys[0] === 'service' && <OpenService/>}
             {selectedKeys[0] === 'key' && <KeySetting/>}
-            {selectedKeys[0] === 'about' && <About/>}
+            {selectedKeys[0] === 'about' && <About/>} */}
           </div>
         </div>
       </AuthDiv>

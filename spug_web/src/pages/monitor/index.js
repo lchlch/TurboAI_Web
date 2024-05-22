@@ -1,22 +1,23 @@
-
-import React from 'react';
-import { observer } from 'mobx-react';
-import { AuthDiv, Breadcrumb } from 'components';
-import ComTable from './Table';
-import ComForm from './Form';
-import MonitorCard from './MonitorCard';
-import store from './store';
+import React from "react";
+import { observer } from "mobx-react";
+import { AuthDiv, Breadcrumb } from "components";
+import ComTable from "./Table";
+import ComForm from "./Form";
+// import MonitorCard from './MonitorCard';
+import store from "./store";
 
 export default observer(function () {
   return (
-    <AuthDiv auth="monitor.monitor.view">
+    <AuthDiv>
       <Breadcrumb>
-        <Breadcrumb.Item>首页</Breadcrumb.Item>
-        <Breadcrumb.Item>监控中心</Breadcrumb.Item>
+        <Breadcrumb.Item>homepage</Breadcrumb.Item>
+        <Breadcrumb.Item>monitoring center</Breadcrumb.Item>
       </Breadcrumb>
       {/* <MonitorCard/> */}
-      <ComTable/>
-      {store.formVisible && <ComForm/>}
+      <AuthDiv auth="list">
+        <ComTable />
+        {store.formVisible && <ComForm />}
+      </AuthDiv>
     </AuthDiv>
-  )
-})
+  );
+});

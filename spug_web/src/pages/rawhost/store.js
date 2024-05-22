@@ -1,7 +1,7 @@
 
 import { observable, computed, toJS } from 'mobx';
 import { message } from 'antd';
-import { http, includes } from 'libs';
+import { http } from 'libs';
 
 class Store {
   @observable rawTreeData = [];
@@ -40,7 +40,7 @@ class Store {
     // let records = [];
     // if (this.group.key) {
     //   const host_ids = this.counter[this.group.key]
-    //   records = this.records.filter(x => host_ids && host_ids.has(x.id));
+    //   records = this.records.filter(x => host_ids && host_ids.has(x.hostId));
     // }
     // if (this.f_status !== '') records = records.filter(x => this.f_status === x.is_verified);
     return this.records
@@ -49,11 +49,11 @@ class Store {
   @computed get counter() {
     const counter = {}
     for (let host of this.records) {
-      for (let id of host.group_ids) {
-        if (counter[id]) {
-          counter[id].add(host.id)
+      for (let hostId of host.group_ids) {
+        if (counter[hostId]) {
+          counter[hostId].add(host.hostId)
         } else {
-          counter[id] = new Set([host.id])
+          counter[hostId] = new Set([host.hostId])
         }
       }
     }
@@ -73,21 +73,21 @@ class Store {
 
   fetchRecords = () => {
     this.isFetching = true;
-    return http.get('/api/v1/dao/hostList/list')
+    return http.get('/api/v1/server/host/list')
       .then(res => {
         // const tmp = {};
         this.rawRecords = res.map(item => {
-          item.id = item.id.toString()
+          item.hostId = item.hostId.toString()
           return item;
         });
-        // this.rawRecords.map(item => tmp[item.id] = item);
+        // this.rawRecords.map(item => tmp[item.hostId] = item);
         // this.idMap = tmp;
       })
       .finally(() => this.isFetching = false)
   };
 
-  fetchExtend = (id) => {
-    http.put('/api/host/', {id})
+  fetchExtend = (hostId) => {
+    http.put('/api/host/', {hostId})
       .then(() => this.fetchRecords())
   }
 
@@ -105,13 +105,13 @@ class Store {
     if (this.rawRecords.length > 0) return Promise.resolve()
     this.isFetching = true;
     this.grpFetching = true;
-    return http.get('/api/v1/dao/hostList/list')
+    return http.get('/api/v1/server/host/list')
       .then((res1) => {
         this.rawRecords = res1.map(item => {
-          item.id = item.id.toString()
+          item.hostId = item.hostId.toString()
           return item;
         });
-        // this.rawRecords.map(item => this.idMap[item.id] = item);
+        // this.rawRecords.map(item => this.idMap[item.hostId] = item);
         // this.groups = res2.groups;
         // this.rawTreeData = res2.treeData;
         // this.group = this.treeData[0] || {};

@@ -10,5 +10,12 @@
   "officialWebsite": "Official Website",
   "executeTasks": "Execute Tasks",
   "fileDistribution": "File Distribution",
-  "ImageManagement": "Image Management"
+  "ImageManagement": "Image Management",
+  "hostbuy": "Buy Hosts",
+  "userManagement": "User Management",
+  "operateLogs": "Operate Logs",
+  "accountManagement": "Account Management",
+  "roleManagement": "Role Management",
+  "enterpriseAccounts": "Enterprise Accounts",
+  "systemManagement": "System Management"
 }

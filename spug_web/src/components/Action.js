@@ -1,8 +1,9 @@
 
 import React from 'react';
 import { Link as ALink } from 'react-router-dom';
-import { Divider, Button as AButton } from 'antd';
+import { Divider } from 'antd';
 import { hasPermission } from 'libs';
+import {AuthButton} from 'components';
 
 function canVisible(auth) {
   return !auth || hasPermission(auth)
@@ -14,7 +15,7 @@ class Action extends React.Component {
   }
 
   static Button(props) {
-    return <AButton type="link" {...props} style={{padding: 0}}/>
+    return <AuthButton type="link" {...props} style={{padding: 0}}/>
   }
 
   _handle = (data, el) => {

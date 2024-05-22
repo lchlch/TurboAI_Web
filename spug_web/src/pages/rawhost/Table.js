@@ -6,37 +6,37 @@ import {
   Dropdown,
   Button,
   Menu,
-  Avatar,
-  Tooltip,
+  // Avatar,
+  // Tooltip,
   Space,
-  Tag,
-  Radio,
-  Input,
+  // Tag,
+  // Radio,
+  // Input,
   message,
 } from "antd";
 import {
   PlusOutlined,
   DownOutlined,
-  SyncOutlined,
+  // SyncOutlined,
   FormOutlined,
 } from "@ant-design/icons";
-import { Action, TableCard, AuthButton, AuthFragment } from "components";
-import IPAddress from "./IPAddress";
-import { http, hasPermission } from "libs";
+import { Action, TableCard, AuthFragment } from "components";
+// import IPAddress from "./IPAddress";
+import { http } from "libs";
 import store from "./store";
-import icons from "./icons";
-import moment from "moment";
+// import icons from "./icons";
+// import moment from "moment";
 
 function ComTable() {
   function handleDelete(text) {
     Modal.confirm({
-      title: "删除确认",
-      content: `确定要删除主机【${text["hostName"]}】?`,
+      title: "delete confirm",
+      content: `ready to delete【${text["hostName"]}】?`,
       onOk: () => {
         return http
-          .delete(`/api/v1/dao/hostList/${text.id}`)
+          .delete(`/api/v1/server/host/${text.hostId}`)
           .then(() => {
-            message.success("删除成功");
+            message.success("delete success");
             store.fetchRecords();
           });
       },
@@ -53,55 +53,55 @@ function ComTable() {
     }
   }
 
-  function ExpTime(props) {
-    if (!props.value) return null;
-    let value = moment(props.value);
-    const days = value.diff(moment(), "days");
-    if (days > 30) {
-      return (
-        <span>
-          剩余 <b style={{ color: "#389e0d" }}>{days}</b> 天
-        </span>
-      );
-    } else if (days > 7) {
-      return (
-        <span>
-          剩余 <b style={{ color: "#faad14" }}>{days}</b> 天
-        </span>
-      );
-    } else if (days >= 0) {
-      return (
-        <span>
-          剩余 <b style={{ color: "#d9363e" }}>{days}</b> 天
-        </span>
-      );
-    } else {
-      return (
-        <span>
-          过期 <b style={{ color: "#d9363e" }}>{Math.abs(days)}</b> 天
-        </span>
-      );
-    }
-  }
+  // function ExpTime(props) {
+  //   if (!props.value) return null;
+  //   let value = moment(props.value);
+  //   const days = value.diff(moment(), "days");
+  //   if (days > 30) {
+  //     return (
+  //       <span>
+  //         剩余 <b style={{ color: "#389e0d" }}>{days}</b> 天
+  //       </span>
+  //     );
+  //   } else if (days > 7) {
+  //     return (
+  //       <span>
+  //         剩余 <b style={{ color: "#faad14" }}>{days}</b> 天
+  //       </span>
+  //     );
+  //   } else if (days >= 0) {
+  //     return (
+  //       <span>
+  //         剩余 <b style={{ color: "#d9363e" }}>{days}</b> 天
+  //       </span>
+  //     );
+  //   } else {
+  //     return (
+  //       <span>
+  //         过期 <b style={{ color: "#d9363e" }}>{Math.abs(days)}</b> 天
+  //       </span>
+  //     );
+  //   }
+  // }
 
   return (
     <TableCard
       tKey="hi"
-      rowKey="id"
-      title={
-        <Input
-          allowClear
-          value={store.f_word}
-          placeholder="输入名称/IP检索"
-          style={{ maxWidth: 250 }}
-          onChange={(e) => (store.f_word = e.target.value)}
-        />
-      }
+      rowKey="hostId"
+      // title={
+      //   <Input
+      //     allowClear
+      //     value={store.f_word}
+      //     placeholder="输入名称/IP检索"
+      //     style={{ maxWidth: 250 }}
+      //     onChange={(e) => (store.f_word = e.target.value)}
+      //   />
+      // }
       loading={store.isFetching}
       dataSource={store.dataSource}
       onReload={store.fetchRecords}
       actions={[
-        <AuthFragment auth="host.host.add">
+        <AuthFragment auth="add">
           <Dropdown
             overlay={
               <Menu onClick={handleImport}>
@@ -110,20 +110,20 @@ function ComTable() {
                     <FormOutlined
                       style={{ fontSize: 16, marginRight: 4, color: "#1890ff" }}
                     />
-                    <span>新建主机</span>
+                    <span>add hosts</span>
                   </Space>
                 </Menu.Item>
-                <Menu.Item key="excel">
+                {/* <Menu.Item key="excel">
                   <Space>
                     <Avatar shape="square" size={20} src={icons.excel} />
                     <span>Excel</span>
                   </Space>
-                </Menu.Item>
+                </Menu.Item> */}
               </Menu>
             }
           >
             <Button type="primary" icon={<PlusOutlined />}>
-              新建 <DownOutlined />
+              new <DownOutlined />
             </Button>
           </Dropdown>
         </AuthFragment>,
@@ -145,10 +145,10 @@ function ComTable() {
         pageSizeOptions: ["10", "20", "50", "100"],
       }}
     >
-      <Table.Column title="id" render={(info) => <div>{info.id}</div>} />
+      <Table.Column title="hostId" render={(info) => <div>{info.hostId}</div>} />
       <Table.Column
         showSorterTooltip={false}
-        title="主机名称"
+        title="host name"
         render={(info) => (
           <Action.Button onClick={() => store.showDetail(info)}>
             {info.hostName}
@@ -156,7 +156,7 @@ function ComTable() {
         )}
         sorter={(a, b) => a.hostName.localeCompare(b.hostName)}
       />
-      <Table.Column title="mac地址" render={(info) => <div>{info.mac}</div>} />
+      <Table.Column title="mac" render={(info) => <div>{info.mac}</div>} />
       {/* <Table.Column
         title="IP地址"
         render={(info) => (
@@ -193,29 +193,27 @@ function ComTable() {
           v ? <Tag color="green">已验证</Tag> : <Tag color="orange">未验证</Tag>
         }
       /> */}
-      {hasPermission("host.host.edit|host.host.del|host.host.console") && (
         <Table.Column
           width={160}
-          title="操作"
+          title="operation"
           render={(info) => (
             <Action>
               <Action.Button
-                auth="host.host.edit"
+                auth="edit"
                 onClick={() => store.showForm(info)}
               >
-                编辑
+                edit
               </Action.Button>
               <Action.Button
                 danger
-                auth="host.host.del"
+                auth="remove"
                 onClick={() => handleDelete(info)}
               >
-                删除
+                delete
               </Action.Button>
             </Action>
           )}
         />
-      )}
     </TableCard>
   );
 }

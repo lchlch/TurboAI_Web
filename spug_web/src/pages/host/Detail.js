@@ -1,107 +1,45 @@
-
-import React, { useState, useEffect, useRef } from 'react';
-import { observer } from 'mobx-react';
-import { Drawer, Descriptions, List, Button, Input, Select, DatePicker, Tag, message } from 'antd';
-import { EditOutlined, SaveOutlined, PlusOutlined, SyncOutlined } from '@ant-design/icons';
-import { AuthButton } from 'components';
-import { http } from 'libs';
-import store from './store';
-import lds from 'lodash';
-import moment from 'moment';
-import styles from './index.module.less';
+import React, { useState, useEffect } from "react";
+import { observer } from "mobx-react";
+import {
+  Drawer,
+  // Descriptions,
+  // List,
+  // Button,
+  // Input,
+  // Select,
+  // DatePicker,
+  // Tag,
+  // message,
+} from "antd";
+// import { EditOutlined, SaveOutlined, PlusOutlined, SyncOutlined } from '@ant-design/icons';
+// import { AuthButton } from 'components';
+// import { http } from 'libs';
+import store from "./store";
+import lds from "lodash";
+// import moment from 'moment';
+// import styles from './index.module.less';
 
 export default observer(function () {
-  const [edit, setEdit] = useState(false);
+  // const [edit, setEdit] = useState(false);
   const [host, setHost] = useState(store.record);
-  const diskInput = useRef();
-  const sipInput = useRef();
-  const gipInput = useRef();
-  const [tag, setTag] = useState();
-  const [inputVisible, setInputVisible] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [fetching, setFetching] = useState(false);
+  // const diskInput = useRef();
+  // const sipInput = useRef();
+  // const gipInput = useRef();
+  // const [tag, setTag] = useState();
+  // const [inputVisible, setInputVisible] = useState(null);
+  // const [loading, setLoading] = useState(false);
+  // const [fetching, setFetching] = useState(false);
 
   useEffect(() => {
     if (store.detailVisible) {
-      setHost(lds.cloneDeep(store.record))
+      setHost(lds.cloneDeep(store.record));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [store.detailVisible])
-
-  useEffect(() => {
-    if (inputVisible === 'disk') {
-      diskInput.current.focus()
-    } else if (inputVisible === 'sip') {
-      sipInput.current.focus()
-    } else if (inputVisible === 'gip') {
-      gipInput.current.focus()
-    }
-  }, [inputVisible])
-
-  function handleSubmit() {
-    setLoading(true)
-    if (host.created_time) host.created_time = moment(host.created_time).format('YYYY-MM-DD')
-    if (host.expired_time) host.expired_time = moment(host.expired_time).format('YYYY-MM-DD')
-    http.post('/api/host/extend/', {host_id: host.id, ...host})
-      .then(res => {
-        Object.assign(host, res);
-        setEdit(false);
-        setHost(lds.cloneDeep(host));
-        store.fetchRecords()
-      })
-      .finally(() => setLoading(false))
-  }
-
-  function handleFetch() {
-    setFetching(true);
-    http.get('/api/host/extend/', {params: {host_id: host.id}})
-      .then(res => {
-        Object.assign(host, res);
-        setHost(lds.cloneDeep(host));
-        message.success('同步成功')
-      })
-      .finally(() => setFetching(false))
-  }
-
-  function handleChange(e, key) {
-    host[key] = e && e.target ? e.target.value : e;
-    if (['created_time', 'expired_time'].includes(key) && e) {
-      host[key] = e.format('YYYY-MM-DD')
-    }
-    setHost({...host})
-  }
+  }, [store.detailVisible]);
 
   function handleClose() {
     store.detailVisible = false;
-    setEdit(false)
-  }
-
-  function handleTagConfirm(key) {
-    if (tag) {
-      if (key === 'disk') {
-        const value = Number(tag);
-        if (lds.isNaN(value)) return message.error('请输入数字');
-        host.disk ? host.disk.push(value) : host.disk = [value]
-      } else if (key === 'sip') {
-        host.private_ip_address ? host.private_ip_address.push(tag) : host.private_ip_address = [tag]
-      } else if (key === 'gip') {
-        host.public_ip_address ? host.public_ip_address.push(tag) : host.public_ip_address = [tag]
-      }
-      setHost(lds.cloneDeep(host))
-    }
-    setTag(undefined);
-    setInputVisible(false)
-  }
-
-  function handleTagRemove(key, index) {
-    if (key === 'disk') {
-      host.disk.splice(index, 1)
-    } else if (key === 'sip') {
-      host.private_ip_address.splice(index, 1)
-    } else if (key === 'gip') {
-      host.public_ip_address.splice(index, 1)
-    }
-    setHost(lds.cloneDeep(host))
+    // setEdit(false);
   }
 
   return (
@@ -110,8 +48,9 @@ export default observer(function () {
       title={host.name}
       placement="right"
       onClose={handleClose}
-      visible={store.detailVisible}>
-      <Descriptions
+      visible={store.detailVisible}
+    >
+      {/* <Descriptions
         bordered
         size="small"
         labelStyle={{width: 150}}
@@ -265,7 +204,7 @@ export default observer(function () {
           ) : host.expired_time}
         </Descriptions.Item>
         <Descriptions.Item label="更新时间">{host.updated_at}</Descriptions.Item>
-      </Descriptions>
+      </Descriptions> */}
     </Drawer>
-  )
-})
+  );
+});

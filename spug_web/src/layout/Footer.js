@@ -1,6 +1,6 @@
 import React from "react";
 import { Layout } from "antd";
-import { CopyrightOutlined, GithubOutlined } from "@ant-design/icons";
+import { CopyrightOutlined } from "@ant-design/icons";
 import styles from "./layout.module.less";
 import { useTranslation } from "react-i18next";
 

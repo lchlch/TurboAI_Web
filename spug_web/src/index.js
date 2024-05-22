@@ -3,7 +3,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
-import zhCN from 'antd/es/locale/zh_CN';
+// import zhCN from 'antd/es/locale/zh_CN';
+import enUS from "antd/es/locale/en_US";
 import './index.less';
 import App from './App';
 import moment from 'moment';
@@ -16,7 +17,7 @@ updatePermissions();
 
 ReactDOM.render(
   <Router history={history}>
-    <ConfigProvider locale={zhCN} getPopupContainer={() => document.fullscreenElement || document.body}>
+    <ConfigProvider locale={enUS} getPopupContainer={() => document.fullscreenElement || document.body}>
       <App/>
     </ConfigProvider>
   </Router>,

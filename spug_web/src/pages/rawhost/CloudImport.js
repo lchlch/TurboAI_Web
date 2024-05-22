@@ -72,7 +72,7 @@ export default observer(function () {
         <Form.Item hidden={step === 0} required label="选择区域" tooltip="选择导入指定区域的主机。">
           <Select placeholder="请选择" value={regionId} onChange={setRegionId}>
             {regions.map(item => (
-              <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>
+              <Select.Option key={item.hostId} value={item.hostId}>{item.name}</Select.Option>
             ))}
           </Select>
         </Form.Item>

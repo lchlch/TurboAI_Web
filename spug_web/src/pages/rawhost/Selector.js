@@ -1,8 +1,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
-import { Modal, Row, Col, Tree, Table, Button, Space, Input, Alert } from 'antd';
-import { FolderOpenOutlined, FolderOutlined, PlusOutlined } from '@ant-design/icons';
+import { Modal, Row, Col, Table, Button, Space, Input, Alert } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import IPAddress from './IPAddress';
 import hStore from './store';
 import store from './store2';
@@ -13,7 +13,7 @@ function HostSelector(props) {
   const [isReady, setIsReady] = useState(false)
   const [loading, setLoading] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [expands, setExpands] = useState([]);
+  // const [expands, setExpands] = useState([]);
 
   useEffect(() => {
     store.onlySelf = props.onlySelf;
@@ -29,8 +29,8 @@ function HostSelector(props) {
     if (!isReady) {
       const length = store.treeData.length
       if (length > 0 && length < 5) {
-        const tmp = store.treeData.filter(x => x.children.length)
-        setExpands(tmp.map(x => x.key))
+        // const tmp = store.treeData.filter(x => x.children.length)
+        // setExpands(tmp.map(x => x.key))
         setIsReady(true)
       }
     }
@@ -50,9 +50,9 @@ function HostSelector(props) {
 
   function handleClickRow(record) {
     let tmp = new Set(selectedRowKeys)
-    if (!tmp.delete(record.id)) {
+    if (!tmp.delete(record.hostId)) {
       if (props.onlyOne) tmp.clear()
-      tmp.add(record.id)
+      tmp.add(record.hostId)
     }
     setSelectedRowKeys([...tmp])
   }
@@ -62,7 +62,7 @@ function HostSelector(props) {
       props.onChange(props.onlyOne ? selectedRowKeys[0] : selectedRowKeys)
       handleClose()
     } else if (props.mode === 'rows') {
-      const value = store.rawRecords.filter(x => selectedRowKeys.includes(x.id))
+      const value = store.rawRecords.filter(x => selectedRowKeys.includes(x.hostId))
       props.onChange(props.onlyOne ? value[0] : value)
       handleClose()
     } else if (props.mode === 'group') {
@@ -72,34 +72,34 @@ function HostSelector(props) {
     }
   }
 
-  function handleExpand(keys, {_, node}) {
-    if (node.children.length > 0) {
-      setExpands(keys)
-    }
-  }
+  // function handleExpand(keys, {_, node}) {
+  //   if (node.children.length > 0) {
+  //     setExpands(keys)
+  //   }
+  // }
 
   function handleSelectAll(selected) {
     let tmp = new Set(selectedRowKeys)
     for (let item of store.dataSource) {
       if (selected) {
-        tmp.add(item.id)
+        tmp.add(item.hostId)
       } else {
-        tmp.delete(item.id)
+        tmp.delete(item.hostId)
       }
     }
     setSelectedRowKeys([...tmp])
   }
 
-  function treeRender(nodeData) {
-    const length = store.counter[nodeData.key]?.size
-    return (
-      <div className={styles.treeNode}>
-        {expands.includes(nodeData.key) ? <FolderOpenOutlined/> : <FolderOutlined/>}
-        <div className={styles.title}>{nodeData.title}</div>
-        {length ? <div className={styles.number}>{length}</div> : null}
-      </div>
-    )
-  }
+  // function treeRender(nodeData) {
+  //   const length = store.counter[nodeData.key]?.size
+  //   return (
+  //     <div className={styles.treeNode}>
+  //       {expands.includes(nodeData.key) ? <FolderOpenOutlined/> : <FolderOutlined/>}
+  //       <div className={styles.title}>{nodeData.title}</div>
+  //       {length ? <div className={styles.number}>{length}</div> : null}
+  //     </div>
+  //   )
+  // }
 
   function handleClose() {
     setSelectedRowKeys([])
@@ -170,7 +170,7 @@ function HostSelector(props) {
               </Space>
             </div>
             <Table
-              rowKey="id"
+              rowKey="hostId"
               dataSource={store.dataSource}
               pagination={false}
               scroll={{y: 480}}

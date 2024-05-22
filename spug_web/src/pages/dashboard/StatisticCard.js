@@ -12,28 +12,57 @@ export default class StatisticCard extends React.Component {
   }
 
   componentDidMount() {
-    // http
-    //   .get("/api/home/statistic/")
-    //   .then((res) =>
-    //     this.setState({
-    //       res: {
-    //         app: 0,
-    //         host: 0,
-    //         task: 0,
-    //         detection: 0,
-    //       },
-    //     })
-    //   )
-    //   .finally(() => this.setState({ loading: false }));
-    
+    let tAgentNum = 0;
+    let hostNum = 0;
+    let lostNum = 0;
+    http
+      .get("/api/v1/server/host/list")
+      .then((res) => {
+        // const tmp = {};
+        // let rawRecords = res.map((item) => {
+        //   item.id = item.id.toString();
+        //   if (item.hostStatus == 0) {
+        //     tAgentNum++;
+        //   }
+        //   hostNum++;
+        //   if (item.hostStatus == 3) {
+        //     lostNum++;
+        //   }
+
+        //   return item;
+        // });
+        this.setState({
+          res: {
+            ...this.state.res,
+            hostNum: hostNum,
+            tAgentNum: tAgentNum,
+            lostNum: lostNum,
+          },
+        });
+      })
+      .finally(() => (this.isFetching = false));
+
+    http
+      .get("/api/v1/prometheus/alerts")
+      .then((res) => {
+        let rules = res?.data?.groups[0]?.rules;
+        let warningNum = 0;
+        if (rules.length > 0) {
+          rules.forEach((item) => {
+            warningNum += item.alerts.length;
+          });
+        }
+        this.setState({
+          res: {
+            ...this.state.res,
+            host: warningNum,
+          },
+        });
+      })
+      .finally(() => (this.isFetching = false));
+
     this.setState({
       loading: false,
-      res: {
-        app: 0,
-        host: 0,
-        task: 0,
-        detection: 0,
-      },
     });
   }
 
@@ -44,40 +73,52 @@ export default class StatisticCard extends React.Component {
         <Col span={6}>
           <Card loading={loading}>
             <Statistic
-              title="主机"
-              value={res.app}
-              suffix={<span style={{ fontSize: 16 }}>台</span>}
-              formatter={(v) => <a href="/deploy/app">{v}</a>}
-            />
-          </Card>
-        </Col>
-        <Col span={6}>
-          <Card loading={loading}>
-            <Statistic
-              title="告警"
-              value={res.host}
-              suffix={<span style={{ fontSize: 16 }}>个</span>}
+              title="Hosts"
+              value={res.hostNum}
+              suffix={<span style={{ fontSize: 16 }}></span>}
               formatter={(v) => <a href="/host">{v}</a>}
+              valueStyle={{
+                color: "#cf1322",
+              }}
             />
           </Card>
         </Col>
         <Col span={6}>
           <Card loading={loading}>
             <Statistic
-              title="运行中"
-              value={res.task}
-              suffix={<span style={{ fontSize: 16 }}>个</span>}
-              formatter={(v) => <a href="/schedule">{v}</a>}
-            />
-          </Card>
-        </Col>
-        <Col span={6}>
-          <Card loading={loading}>
-            <Statistic
-              title="离线中"
-              value={res["detection"]}
-              suffix={<span style={{ fontSize: 16 }}>项</span>}
+              title="Warnings"
+              value={res.host}
+              suffix={<span style={{ fontSize: 16 }}></span>}
               formatter={(v) => <a href="/monitor">{v}</a>}
+              valueStyle={{
+                color: "red",
+              }}
+            />
+          </Card>
+        </Col>
+        <Col span={6}>
+          <Card loading={loading}>
+            <Statistic
+              title="Tagent Monitoring"
+              value={res.tAgentNum}
+              suffix={<span style={{ fontSize: 16 }}></span>}
+              formatter={(v) => <a href="/host">{v}</a>}
+              valueStyle={{
+                color: "#cf1322",
+              }}
+            />
+          </Card>
+        </Col>
+        <Col span={6}>
+          <Card loading={loading}>
+            <Statistic
+              title="Outline"
+              value={res["lostNum"]}
+              suffix={<span style={{ fontSize: 16 }}></span>}
+              formatter={(v) => <a href="/host">{v}</a>}
+              valueStyle={{
+                color: "#cf1322",
+              }}
             />
           </Card>
         </Col>

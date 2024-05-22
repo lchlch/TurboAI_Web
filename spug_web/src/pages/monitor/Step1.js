@@ -1,73 +1,72 @@
+import React, { useState } from "react";
+import { observer } from "mobx-react";
+// import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { Form, Input, Button } from "antd";
+import TemplateSelector from "../exec/task/TemplateSelector";
+// import HostSelector from 'pages/host/Selector';
+// import { LinkButton, ACEditor } from 'components';
+// import { http } from 'libs';
+import store from "./store";
+// import lds from 'lodash';
 
-import React, { useState } from 'react';
-import { observer } from 'mobx-react';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { Modal, Form, Input, Select, Button, message } from 'antd';
-import TemplateSelector from '../exec/task/TemplateSelector';
-import HostSelector from 'pages/host/Selector';
-import { LinkButton, ACEditor } from 'components';
-import { http, cleanCommand } from 'libs';
-import store from './store';
-import lds from 'lodash';
-
-const helpMap = {
-  '1': '返回HTTP状态码200-399则判定为正常，其他为异常。',
-  '4': '脚本执行退出状态码为 0 则判定为正常，其他为异常。'
-}
+// const helpMap = {
+//   '1': '返回HTTP状态码200-399则判定为正常，其他为异常。',
+//   '4': '脚本执行退出状态码为 0 则判定为正常，其他为异常。'
+// }
 
 export default observer(function () {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [showTmp, setShowTmp] = useState(false);
 
-  function handleTest() {
-    setLoading(true)
-    const formData = lds.pick(store.record, ['type', 'targets', 'extra'])
-    http.post('/api/monitor/test/', formData, {timeout: 120000})
-      .then(res => {
-        if (res.is_success) {
-          Modal.success({content: res.message})
-        } else {
-          Modal.warning({content: res.message})
-        }
-      })
-      .finally(() => setLoading(false))
-  }
+  // function handleTest() {
+  //   setLoading(true)
+  //   const formData = lds.pick(store.record, ['type', 'targets', 'extra'])
+  //   http.post('/api/monitor/test/', formData, {timeout: 120000})
+  //     .then(res => {
+  //       if (res.is_success) {
+  //         Modal.success({content: res.message})
+  //       } else {
+  //         Modal.warning({content: res.message})
+  //       }
+  //     })
+  //     .finally(() => setLoading(false))
+  // }
 
-  function handleChangeType(v) {
-    store.record.type = v;
-    store.record.targets = [];
-    store.record.extra = undefined;
-  }
+  // function handleChangeType(v) {
+  //   store.record.type = v;
+  //   store.record.targets = [];
+  //   store.record.extra = undefined;
+  // }
 
-  function handleAddGroup() {
-    Modal.confirm({
-      icon: <ExclamationCircleOutlined/>,
-      title: '添加监控分组',
-      content: (
-        <Form layout="vertical" style={{marginTop: 24}}>
-          <Form.Item required label="监控分组">
-            <Input onChange={e => store.record.group = e.target.value}/>
+  // function handleAddGroup() {
+  //   Modal.confirm({
+  //     icon: <ExclamationCircleOutlined/>,
+  //     title: 'add',
+  //     content: (
+  //       <Form layout="vertical" style={{marginTop: 24}}>
+  //         <Form.Item required label="groups">
+  //           <Input onChange={e => store.record.group = e.target.value}/>
 
-          </Form.Item>
-        </Form>
-      ),
-      onOk: () => {
-        if (store.record.group) {
-          store.groups.push(store.record.group);
-        }
-      },
-    })
-  }
+  //         </Form.Item>
+  //       </Form>
+  //     ),
+  //     onOk: () => {
+  //       if (store.record.group) {
+  //         store.groups.push(store.record.group);
+  //       }
+  //     },
+  //   })
+  // }
 
-  function canNext() {
-    const {type, targets, extra, group} = store.record;
-    const is_verify = name && group && targets.length;
-    if (['2', '3', '4'].includes(type)) {
-      return is_verify && extra
-    } else {
-      return is_verify
-    }
-  }
+  // function canNext() {
+  //   // const {type, targets, extra, group} = store.record;
+  //   // const is_verify = name && group && targets.length;
+  //   // if (['2', '3', '4'].includes(type)) {
+  //   //   return is_verify && extra
+  //   // } else {
+  //   //   return is_verify
+  //   // }
+  // }
 
   function toNext() {
     // const {type, extra} = store.record;
@@ -78,14 +77,14 @@ export default observer(function () {
     store.page += 1;
   }
 
-  function getStyle(t) {
-    return t.includes(store.record.type) ? {} : {display: 'none'}
-  }
+  // function getStyle(t) {
+  //   return t.includes(store.record.type) ? {} : {display: 'none'}
+  // }
 
-  const {name, desc, type, targets, extra, group} = store.record;
+  const { alert, expr, description } = store.record;
   return (
-    <Form labelCol={{span: 6}} wrapperCol={{span: 14}}>
-      <Form.Item required label="监控分组" style={{marginBottom: 0}}>
+    <Form labelCol={{ span: 6 }} wrapperCol={{ span: 14 }}>
+      {/* <Form.Item required label="监控分组" style={{marginBottom: 0}}>
         <Form.Item style={{display: 'inline-block', width: 'calc(75%)', marginRight: 8}}>
           <Select value={group} placeholder="请选择监控分组" onChange={v => store.record.group = v}>
             {store.groups.map(item => (
@@ -96,8 +95,8 @@ export default observer(function () {
         <Form.Item style={{display: 'inline-block', width: 'calc(25%-8px)'}}>
           <Button type="link" onClick={handleAddGroup}>添加分组</Button>
         </Form.Item>
-      </Form.Item>
-      <Form.Item label="监控类型" tooltip={helpMap[type]}>
+      </Form.Item> */}
+      {/* <Form.Item label="监控类型" tooltip={helpMap[type]}>
         <Select placeholder="请选择监控类型" value={type} onChange={handleChangeType}>
           <Select.Option value="1">站点检测</Select.Option>
           <Select.Option value="2">端口检测</Select.Option>
@@ -105,11 +104,23 @@ export default observer(function () {
           <Select.Option value="3">进程检测</Select.Option>
           <Select.Option value="4">自定义脚本</Select.Option>
         </Select>
+      </Form.Item> */}
+      <Form.Item required label="name">
+        <Input
+          value={alert}
+          onChange={(e) => (store.record.alert = e.target.value)}
+          disabled={store.isEdit}
+          placeholder="please input name"
+        />
       </Form.Item>
-      <Form.Item required label="监控名称">
-        <Input value={name} onChange={e => store.record.name = e.target.value} placeholder="请输入监控名称"/>
+      <Form.Item required label="warn conditions">
+        <Input
+          value={expr}
+          onChange={(e) => (store.record.expr = e.target.value)}
+          placeholder="input query sql"
+        />
       </Form.Item>
-      <Form.Item required label="监控地址" style={getStyle(['1'])}>
+      {/* <Form.Item required label="监控地址" style={getStyle(['1'])}>
         <Select
           mode="tags"
           value={targets}
@@ -117,8 +128,8 @@ export default observer(function () {
           onChange={v => store.record.targets = v}
           placeholder="http(s)://开头，支持多个地址，每输入完成一个后按回车确认"
           notFoundContent={null}/>
-      </Form.Item>
-      <Form.Item required label="监控地址" style={getStyle(['2', '5'])}>
+      </Form.Item> */}
+      {/* <Form.Item required label="监控地址" style={getStyle(['2', '5'])}>
         <Select
           mode="tags"
           value={targets}
@@ -126,8 +137,8 @@ export default observer(function () {
           onChange={v => store.record.targets = v}
           placeholder="IP或域名，支持多个地址，每输入完成一个后按回车确认"
           notFoundContent={null}/>
-      </Form.Item>
-      <Form.Item required label="监控主机" style={getStyle(['3', '4'])}>
+      </Form.Item> */}
+      {/* <Form.Item required label="监控主机" style={getStyle(['3', '4'])}>
         <HostSelector value={targets} onChange={ids => store.record.targets = ids}/>
       </Form.Item>
       <Form.Item label="响应时间" style={getStyle(['1'])}>
@@ -151,18 +162,29 @@ export default observer(function () {
           width="100%"
           height="200px"
           onChange={e => store.record.extra = cleanCommand(e)}/>
-      </Form.Item>
-      <Form.Item label="备注信息">
-        <Input.TextArea value={desc} onChange={e => store.record.desc = e.target.value} placeholder="请输入备注信息"/>
+      </Form.Item> */}
+      <Form.Item label="warning template">
+        <Input.TextArea
+          value={description}
+          onChange={(e) => (store.record.description = e.target.value)}
+          placeholder="please input warning template"
+        />
       </Form.Item>
 
-      <Form.Item wrapperCol={{span: 14, offset: 6}} style={{marginTop: 12}}>
+      <Form.Item wrapperCol={{ span: 14, offset: 6 }} style={{ marginTop: 12 }}>
         {/* <Button disabled={!canNext()} type="primary" onClick={toNext}>下一步</Button> */}
-        <Button type="primary" onClick={toNext}>下一步</Button>
-        <Button disabled={!canNext()} type="link" loading={loading} onClick={handleTest}>执行测试</Button>
-        <span style={{color: '#888', fontSize: 12}}>Tips: 仅测试第一个监控地址</span>
+        <Button type="primary" onClick={toNext}>
+          next
+        </Button>
+        {/* <Button disabled={!canNext()} type="link" loading={loading} onClick={handleTest}>执行测试</Button>
+        <span style={{color: '#888', fontSize: 12}}>Tips: 仅测试第一个监控地址</span> */}
       </Form.Item>
-      {showTmp && <TemplateSelector onOk={({body}) => store.record.extra = body} onCancel={() => setShowTmp(false)}/>}
+      {showTmp && (
+        <TemplateSelector
+          onOk={({ body }) => (store.record.extra = body)}
+          onCancel={() => setShowTmp(false)}
+        />
+      )}
     </Form>
-  )
-})
+  );
+});
